@@ -1,0 +1,52 @@
+@use './styles/shared';
+
+.root {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #282c34;
+}
+
+.logo {
+    height: 10vmin;
+    padding: 1 rem;
+    filter: invert(1);
+    pointer-events: none;
+}
+.header {
+    min-height: 18vh;
+    font-size: 1.2rem;
+    background-color: #282c34;
+    /* min-height: 100vh; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* font-size: calc(10px + 2vmin); */
+    color: shared.$primary-color;
+
+    ul {
+        list-style: none;
+
+        li {
+            display: inline-block;
+            margin: 10px;
+        }
+    }
+}
+.main {
+    min-height: 98vh;
+    color: white;
+}
+.link {
+    color: shared.$link-color;
+}
+
+/* @keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
