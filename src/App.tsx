@@ -1,26 +1,68 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Link as RouterLink, Outlet } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+import styles from './App.module.scss';
+import {
+    AppBar,
+    CssBaseline,
+    Link,
+    ThemeProvider,
+    Toolbar,
+    Typography,
+    createTheme,
+} from '@mui/material';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
+import { teal } from '@mui/material/colors';
+
+export function HeaderLink({
+    children,
+    to,
+}: {
+    to: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <Link
+            component={RouterLink}
+            to={to}
+            variant="button"
+            color="inherit"
+            sx={{ mr: 1, mx: 1.5 }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+            {children}
+        </Link>
+    );
+}
+const defaultTheme = createTheme({
+    palette: {
+        primary: teal,
+        secondary: {
+            main: '#96000f',
+        },
+    },
+});
+function App() {
+    return (
+        <ThemeProvider theme={defaultTheme}>
+            <CssBaseline />
+            <AppBar>
+                <Toolbar>
+                    <LiveTvIcon sx={{ mr: 2 }} />
+                    <Typography>The Movies DB</Typography>
+                    <nav>
+                        <HeaderLink to="/search">Search</HeaderLink>
+
+                        <HeaderLink to="/about">About</HeaderLink>
+
+                        <HeaderLink to="/movies">Movies</HeaderLink>
+                    </nav>
+                </Toolbar>
+            </AppBar>
+            <main className={styles.main}>
+                <Outlet />
+            </main>
+        </ThemeProvider>
+    );
 }
 
 export default App;
