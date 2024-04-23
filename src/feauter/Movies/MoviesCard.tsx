@@ -14,6 +14,7 @@ export interface MovieCardProps {
     overview: string;
     popularity: number;
     image?: string;
+    budget?: number;
 }
 function MovieCard({ id, title, overview, popularity, image }: MovieCardProps) {
     return (
@@ -33,7 +34,7 @@ function MovieCard({ id, title, overview, popularity, image }: MovieCardProps) {
             <CardActions>
                 <Button
                     component={RouterLink}
-                    to={`/movies/${id}`}
+                    to={`/details/${id}`}
                     color="secondary"
                 >
                     Datails

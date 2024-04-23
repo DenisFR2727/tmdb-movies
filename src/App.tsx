@@ -58,7 +58,10 @@ function App() {
                     </nav>
                 </Toolbar>
             </AppBar>
-            <main className={styles.main}>
+            <main
+                className={styles.generalBackground}
+                style={{ marginTop: '70px' }}
+            >
                 <Outlet />
             </main>
         </ThemeProvider>

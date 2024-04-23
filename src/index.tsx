@@ -15,7 +15,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import Movies from './feauter/Movies/Movies';
 import { SearchMovie } from './feauter/Search/SearchMovie';
-// import CardFilm from './feauter/Movies/MovieCard';
+import CardFilmDetails from './feauter/Movies/MovieCardDetails';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -26,7 +26,10 @@ ReactDOM.render(
                         <Route path="search" element={<SearchMovie />} />
                         <Route path="about" element={<About />} />
                         <Route path="movies" element={<Movies />} />
-                        {/* <Route path="movies/:id" element={<CardFilm />} /> */}
+                        <Route
+                            path="details/:id"
+                            element={<CardFilmDetails />}
+                        />
                     </Route>
                 </Routes>
             </Router>

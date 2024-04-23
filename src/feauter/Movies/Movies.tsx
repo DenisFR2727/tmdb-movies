@@ -21,18 +21,22 @@ function Movies({ movies, loading }: MoviesProps) {
     }, [dispatch]);
 
     return (
-        <Container sx={{ py: 8 }} maxWidth="lg">
-            <Typography variant="h4" align="center" gutterBottom>
-                Now Playing
+        <Container sx={{ py: 8, paddingTop: '0px' }} maxWidth="lg">
+            <Typography
+                sx={{ marginTop: '10px' }}
+                variant="h4"
+                align="center"
+                gutterBottom
+            >
+                Movies
             </Typography>
-
             {loading ? (
                 <LinearProgress color="secondary" />
             ) : (
                 <Grid container spacing={4}>
                     {movies.map((movie) => (
                         <Grid item key={movie.id} xs={12} sm={6} md={4}>
-                            <MovieCard key={movie.id} {...movie} />
+                            <MovieCard {...movie} />
                         </Grid>
                     ))}
                 </Grid>

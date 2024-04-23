@@ -8,14 +8,12 @@ import { SearchIconWrapper, Search, StyledInputBase } from './StyleSearch';
 import SearchIcon from '@mui/icons-material/Search';
 import { HeaderLink } from '../../App';
 import { useSelector } from 'react-redux';
-// import { MoviesProps } from '../Movies/Movies';
-// import { client } from '../../api/tmdb';
+
 import { IMovieState, fetchSearchMovies } from '../../reducers/movies';
 import { useAppDispatch } from '../../hooks/hooks';
-import { client } from '../../api/tmdb';
 
 export function SearchAppBar() {
-    const [query, setQuery] = React.useState<string>(''); // state for search query
+    const [query, setQuery] = React.useState<string>('');
     const dispatch = useAppDispatch();
     const searchResults = useSelector(
         (state: { movies: IMovieState }) => state.movies.search
@@ -25,29 +23,8 @@ export function SearchAppBar() {
     };
 
     const handleSearchClick = async () => {
-        // const results = await client.getSearch(query);
-        // console.log(results);
         dispatch(fetchSearchMovies(query));
     };
-    // if (searchResults.length === 0) {
-    //     return (
-    //         <Typography
-    //             sx={{
-    //                 paddingTop: '100px',
-    //                 display: 'flex',
-    //                 justifyContent: 'center',
-    //                 color: 'black',
-    //             }}
-    //         >
-    //             Film not Found!
-    //         </Typography>
-    //     );
-    // }
-    // React.useEffect(() => {
-    //     if (query) {
-    //         dispatch(fetchSearchMovies(query));
-    //     }
-    // }, [query, dispatch]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
