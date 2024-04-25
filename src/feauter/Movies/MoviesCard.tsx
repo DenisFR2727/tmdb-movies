@@ -8,14 +8,9 @@ import {
     Typography,
 } from '@mui/material';
 
-export interface MovieCardProps {
-    id: number;
-    title: string;
-    overview: string;
-    popularity: number;
-    image?: string;
-    budget?: number;
-}
+// Types
+import { MovieCardProps } from './types';
+
 function MovieCard({ id, title, overview, popularity, image }: MovieCardProps) {
     return (
         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>

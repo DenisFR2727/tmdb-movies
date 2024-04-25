@@ -1,5 +1,11 @@
 import configuration from '../configuration';
 import axios, { AxiosRequestConfig } from 'axios';
+import {
+    MovieDetails,
+    VideoResponse,
+    PageResponse,
+    Configuration,
+} from './types';
 
 async function get<TBody>(relativeUrl: string, params?: any): Promise<TBody> {
     const options: AxiosRequestConfig = {
@@ -25,53 +31,7 @@ async function get<TBody>(relativeUrl: string, params?: any): Promise<TBody> {
         throw new Error(`Error get themoviedb`);
     }
 }
-export interface Genres {
-    id: number;
-    name: string;
-}
-export interface Production_companies {
-    id: number;
-    logo_path: string;
-    name: string;
-    origin_country: string;
-}
-export interface MovieDetails {
-    id: number;
-    title: string;
-    popularity: number;
-    overview: string;
-    backdrop_path?: string;
-    image?: string;
-    budget?: number;
-    genres?: Genres[];
-    production_companies: Production_companies[];
-}
-export interface Video {
-    iso_639_1: string;
-    iso_3166_1: string;
-    name: string;
-    key: string;
-    site: string;
-    size: number;
-    type: string;
-    official: boolean;
-    published_at: string;
-    id: string;
-}
 
-export interface VideoResponse {
-    id: number;
-    results: Video[];
-}
-interface PageResponse<TResult> {
-    results: TResult[];
-    page: number;
-}
-interface Configuration {
-    images: {
-        base_url: string;
-    };
-}
 export const client = {
     async getConfiguration() {
         const response = get<Configuration>('/configuration');
@@ -100,7 +60,9 @@ export const client = {
         return response;
     },
     async getVideo(movieId: number): Promise<VideoResponse> {
-        const response = await get<VideoResponse>(`/movie/${movieId}/videos`);
+        const response = await get<VideoResponse>(
+            `/movie/${movieId}/videos?language=ru-RU`
+        );
         return response;
     },
 };

@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
-import { Movie, fetchMovies } from '../../reducers/movies';
+import { Movie } from '../../reducers/types';
+import { fetchMovies } from '../../reducers/movies';
+
 import { useAppDispatch } from '../../hooks/hooks';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
 import MovieCard from './MoviesCard';
 
+// Mui
 import { Container } from '@mui/system';
 import { Grid, LinearProgress, Typography } from '@mui/material';
 

@@ -1,12 +1,10 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {
-    IMovieState,
-    fetchDatailsMovies,
-    fetchVideoMovies,
-} from '../../reducers/movies';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchDatailsMovies, fetchVideoMovies } from '../../reducers/movies';
 import ReactPlayer from 'react-player';
+// import { ModalVideo } from './MovieCardDetails';
 // mui
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -14,12 +12,35 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
 import { Box, Container, Grid } from '@mui/material';
-import { MovieDetails, Video, VideoResponse } from '../../api/tmdb';
-import { useAppDispatch } from '../../hooks/hooks';
 import { Modal } from '@mui/material';
 
+// Types
+import { MovieDetails, Video, VideoResponse } from '../../api/types';
+import { IMovieState } from '../../reducers/types';
+
+const text = {
+    border: '1px solid black',
+    padding: '15px',
+    color: 'red',
+    background: 'white',
+    lineHeight: '25px',
+    fontWeight: 500,
+    opacity: 0.6,
+    borderRadius: '10px',
+    paddingBottom: '10px',
+};
+const textColumn = {
+    display: 'flex',
+    flexDirection: { xs: 'column', sm: 'row' },
+    border: '1px solid black',
+    padding: '5px',
+    borderRadius: '10px',
+    color: 'red',
+    background: 'white',
+    opacity: 0.6,
+    p: '10px',
+};
 function CardFilmDetails() {
     const { id } = useParams<string>();
     const dispatch = useAppDispatch();
@@ -35,6 +56,7 @@ function CardFilmDetails() {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
     useEffect(() => {
         dispatch(fetchDatailsMovies(Number(id)));
         dispatch(fetchVideoMovies(Number(id)));
@@ -47,6 +69,7 @@ function CardFilmDetails() {
         setDatails(movie ?? null);
     }, [id, movies]);
 
+    //  find video to id
     useEffect(() => {
         const videoResponse = videos.find(
             (videoResponse: VideoResponse): boolean =>
@@ -115,55 +138,42 @@ function CardFilmDetails() {
                             <Typography
                                 variant="body2"
                                 color="text.secondary"
-                                sx={{
-                                    border: '1px solid black',
-                                    padding: '15px',
-                                    lineHeight: '25px',
-                                    fontWeight: 500,
-                                    color: 'red',
-                                    background: 'white',
-                                    opacity: 0.6,
-                                }}
+                                sx={text}
                             >
                                 {overview}
                             </Typography>
-                            <Typography
-                                sx={{
-                                    paddingTop: '20px',
-                                    color: 'red',
-                                    background: 'white',
-                                    opacity: 0.6,
-                                    borderRadius: '10px',
-                                    paddingBottom: '10px',
-                                }}
-                            >
+                            <Typography sx={text}>
                                 Budget: {Number(budget)}$
                             </Typography>
-                            <Typography>{popularity}</Typography>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: { xs: 'column', sm: 'row' },
-                                    border: '1px solid black',
-                                    padding: '5px',
-                                    borderRadius: '10px',
-                                    color: 'red',
-                                    background: 'white',
-                                    opacity: 0.6,
-                                }}
-                            >
+                            <Typography sx={textColumn}>
+                                {popularity}
+                            </Typography>
+                            <Box sx={textColumn}>
                                 <Typography>Genres:</Typography>
                                 {genres?.map((g, index, array) => (
                                     <Typography
                                         key={g.id}
-                                        sx={{ paddingLeft: '10px' }}
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: {
+                                                xs: 'column',
+                                                sm: 'row',
+                                            },
+                                            border: '1px solid black',
+                                            padding: '5px',
+                                            borderRadius: '10px',
+                                            color: 'red',
+                                            background: 'white',
+                                            marginRight: '10px',
+                                            p: '10px',
+                                        }}
                                     >
                                         {g.name}
                                         {index !== array.length - 1 ? ',' : ''}
                                     </Typography>
                                 ))}
                             </Box>
-                            <Box>
+                            <Box sx={textColumn}>
                                 {production_companies.map((p) => (
                                     <Box key={p.id}>
                                         <Typography>{p.name}</Typography>
@@ -181,34 +191,11 @@ function CardFilmDetails() {
                             </Button>
                         </CardActions>
                         <Grid>
-                            <Modal
+                            <ModalVideo
                                 open={open}
-                                onClose={handleClose}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
-                            >
-                                <Box
-                                    sx={{
-                                        position: 'absolute',
-                                        top: '50%',
-                                        left: '50%',
-                                        transform: 'translate(-50%, -50%)',
-                                        bgcolor: 'background.paper',
-                                        boxShadow: 24,
-                                        p: 4,
-                                        width: '80vw', // 80% of viewport width
-                                        height: '80vh',
-                                    }}
-                                >
-                                    <ReactPlayer
-                                        url={`https://www.youtube.com/watch?v=${movieVideo?.key}`}
-                                        playing
-                                        controls
-                                        width="100%"
-                                        height="100%"
-                                    />
-                                </Box>
-                            </Modal>
+                                handleClose={handleClose}
+                                movieVideo={movieVideo}
+                            />
                         </Grid>
                     </Card>
                 </Grid>
@@ -216,4 +203,42 @@ function CardFilmDetails() {
         </Container>
     );
 }
+interface ModalProps {
+    open: boolean;
+    handleClose: () => void;
+    movieVideo: { key: string } | null;
+}
+function ModalVideo({ open, handleClose, movieVideo }: ModalProps) {
+    return (
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    width: '80vw',
+                    height: '80vh',
+                }}
+            >
+                <ReactPlayer
+                    url={`https://www.youtube.com/watch?v=${movieVideo?.key}`}
+                    playing
+                    controls
+                    width="100%"
+                    height="100%"
+                />
+            </Box>
+        </Modal>
+    );
+}
+export { ModalVideo };
 export default CardFilmDetails;

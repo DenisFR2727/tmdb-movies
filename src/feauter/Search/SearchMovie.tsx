@@ -1,17 +1,19 @@
-import { CardMedia, Typography } from '@mui/material';
 import * as React from 'react';
+import { HeaderLink } from '../../App';
+import { useSelector } from 'react-redux';
+import { fetchSearchMovies } from '../../reducers/movies';
+import { useAppDispatch } from '../../hooks/hooks';
+import { SearchIconWrapper, Search, StyledInputBase } from './StyleSearch';
 
+// MUI
+import { CardMedia, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import { SearchIconWrapper, Search, StyledInputBase } from './StyleSearch';
 import SearchIcon from '@mui/icons-material/Search';
-import { HeaderLink } from '../../App';
-import { useSelector } from 'react-redux';
 
-import { IMovieState, fetchSearchMovies } from '../../reducers/movies';
-import { useAppDispatch } from '../../hooks/hooks';
-
+// Types
+import { IMovieState } from '../../reducers/types';
 export function SearchAppBar() {
     const [query, setQuery] = React.useState<string>('');
     const dispatch = useAppDispatch();

@@ -1,35 +1,27 @@
-import {
-    Genres,
-    MovieDetails,
-    Production_companies,
-    Video,
-    VideoResponse,
-    client,
-} from '../api/tmdb';
+import { client } from '../api/tmdb';
+
+// Types
+import { Movie, IMovieState } from './types';
+import { VideoResponse, MovieDetails } from '../api/types';
+
 import createReducer from '../redux/utils';
 import { ActionWidthPayload } from '../redux/utils';
 import { AppThunk } from '../store';
 
-export interface Movie {
-    id: number;
-    title: string;
-    popularity: number;
-    overview: string;
-    image?: string;
-    budget?: number;
-    genres?: Genres[];
-    production_companies: Production_companies[];
-}
-export interface IMovieState {
-    top: Movie[];
-    loading: boolean;
-    search: Movie[];
-    datails: Movie[];
-    video: VideoResponse[];
-}
 // export interface VideoWithMovieId extends Video {
 //     movieId: number;
 // }
+
+// const datails = {
+//     id: m.id,
+//     title: m.title,
+//     overview: m.overview,
+//     popularity: m.popularity,
+//     image: m.backdrop_path ? `${imageUrl}w780${m.backdrop_path}` : undefined,
+//     budget: m.budget,
+//     genres: m.genres,
+//     production_companies: m.production_companies,
+// };
 
 const initialState: IMovieState = {
     top: [],
@@ -58,6 +50,7 @@ const moviesVideo = (movies: VideoResponse[]) => ({
     type: 'movies/video',
     payload: movies,
 });
+
 export function fetchMovies(): AppThunk<Promise<void>> {
     return async (dispatch, getState) => {
         dispatch(moviesLoading());
