@@ -10,7 +10,7 @@ import MovieCard from './MoviesCard';
 // Mui
 import { Container } from '@mui/system';
 import { Grid, LinearProgress, Typography } from '@mui/material';
-
+import './Movies.module.scss';
 export interface MoviesProps {
     movies: Movie[];
     loading: boolean;
@@ -31,7 +31,7 @@ function Movies({ movies, loading }: MoviesProps) {
                 align="center"
                 gutterBottom
             >
-                Movies
+                <h3>Movies</h3>
             </Typography>
             {loading ? (
                 <LinearProgress color="secondary" />

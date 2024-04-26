@@ -14,6 +14,9 @@ import SearchIcon from '@mui/icons-material/Search';
 
 // Types
 import { IMovieState } from '../../reducers/types';
+
+import './search.scss';
+
 export function SearchAppBar() {
     const [query, setQuery] = React.useState<string>('');
     const dispatch = useAppDispatch();
@@ -51,6 +54,7 @@ export function SearchAppBar() {
             </AppBar>
             {searchResults.length === 0 ? (
                 <Typography
+                    className="not-found-movies"
                     sx={{
                         paddingTop: '100px',
                         display: 'flex',
@@ -58,7 +62,7 @@ export function SearchAppBar() {
                         color: 'black',
                     }}
                 >
-                    Films not Found!
+                    Movies not Found!
                 </Typography>
             ) : (
                 searchResults.map((movie: any) => (

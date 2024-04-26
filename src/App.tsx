@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink, Outlet } from 'react-router-dom';
+import { Link as RouterLink, Outlet, NavLink } from 'react-router-dom';
 
 import styles from './App.module.scss';
 import {
@@ -66,11 +66,15 @@ function App() {
                     width: '100px',
                 }}
             >
-                {['Search', 'About', 'Movies'].map((text, index) => (
+                {['Search', 'About', 'Movies', 'Home'].map((text, index) => (
                     <ListItem
                         key={text}
                         component={RouterLink}
-                        to={`/${text.toLowerCase()}`}
+                        to={`/${
+                            text.toLowerCase() === 'home'
+                                ? ''
+                                : text.toLowerCase()
+                        }`}
                     >
                         <ListItemText
                             primary={text}
@@ -107,7 +111,9 @@ function App() {
                     sx={{ display: 'flex', justifyContent: 'space-between' }}
                 >
                     <LiveTvIcon sx={{ mr: 2 }} />
-                    <Typography>The Movies DB</Typography>
+                    <Typography sx={{ textDecoration: 'none' }}>
+                        <HeaderLink to="/">The Movies DB</HeaderLink>
+                    </Typography>
                     {isMobile ? (
                         <>
                             <IconButton
@@ -131,6 +137,7 @@ function App() {
                         </>
                     ) : (
                         <nav>
+                            <HeaderLink to="/">Home</HeaderLink>
                             <HeaderLink to="/search">Search</HeaderLink>
                             <HeaderLink to="/about">About</HeaderLink>
                             <HeaderLink to="/movies">Movies</HeaderLink>

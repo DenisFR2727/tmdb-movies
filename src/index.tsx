@@ -16,6 +16,7 @@ import store from './store';
 import Movies from './feauter/Movies/Movies';
 import { SearchMovie } from './feauter/Search/SearchMovie';
 import CardFilmDetails from './feauter/Movies/MovieCardDetails';
+import Home from './feauter/Home/Home';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -23,6 +24,7 @@ ReactDOM.render(
             <Router>
                 <Routes>
                     <Route path="/" element={<App />}>
+                        <Route path="/" element={<Home />} />
                         <Route path="search" element={<SearchMovie />} />
                         <Route path="about" element={<About />} />
                         <Route path="movies" element={<Movies />} />

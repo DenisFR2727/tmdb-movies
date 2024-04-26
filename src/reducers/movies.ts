@@ -2,26 +2,11 @@ import { client } from '../api/tmdb';
 
 // Types
 import { Movie, IMovieState } from './types';
-import { VideoResponse, MovieDetails } from '../api/types';
+import { VideoResponse, MovieDetails, Popular } from '../api/types';
 
 import createReducer from '../redux/utils';
 import { ActionWidthPayload } from '../redux/utils';
 import { AppThunk } from '../store';
-
-// export interface VideoWithMovieId extends Video {
-//     movieId: number;
-// }
-
-// const datails = {
-//     id: m.id,
-//     title: m.title,
-//     overview: m.overview,
-//     popularity: m.popularity,
-//     image: m.backdrop_path ? `${imageUrl}w780${m.backdrop_path}` : undefined,
-//     budget: m.budget,
-//     genres: m.genres,
-//     production_companies: m.production_companies,
-// };
 
 const initialState: IMovieState = {
     top: [],
@@ -29,6 +14,7 @@ const initialState: IMovieState = {
     search: [],
     datails: [],
     video: [],
+    popular: [],
 };
 // actionCreators
 const moviesLoaded = (movies: Movie[]) => ({
@@ -50,7 +36,15 @@ const moviesVideo = (movies: VideoResponse[]) => ({
     type: 'movies/video',
     payload: movies,
 });
-
+const moviesPopular = (movies: Popular[]) => ({
+    type: 'movies/popular',
+    payload: movies,
+});
+const setLoadingFalse = () => {
+    return {
+        type: 'movies/loadingFalse',
+    };
+};
 export function fetchMovies(): AppThunk<Promise<void>> {
     return async (dispatch, getState) => {
         dispatch(moviesLoading());
@@ -147,6 +141,37 @@ export function fetchVideoMovies(videoId: number): AppThunk<Promise<void>> {
         dispatch(moviesVideo([mappedResults]));
     };
 }
+export function fetchPopularMovie(): AppThunk<Promise<void>> {
+    return async (dispatch, getState) => {
+        try {
+            dispatch(moviesLoading());
+            const config = await client.getConfiguration();
+            const imageUrl = config.images.base_url;
+            const popular = await client.getPopular();
+
+            const mappedResults: Popular[] = popular.map((m) => ({
+                id: m.id,
+                original_language: m.original_language,
+                original_title: m.original_title,
+                overview: m.overview,
+                popularity: m.popularity,
+                poster_path: m.poster_path
+                    ? `${imageUrl}w300${m.poster_path}`
+                    : undefined,
+                release_date: m.release_date,
+                title: m.release_date,
+                video: m.video,
+                vote_average: m.vote_average,
+                vote_count: m.vote_count,
+            }));
+            dispatch(moviesPopular(mappedResults));
+        } catch (error) {
+            console.error(error);
+        } finally {
+            dispatch(setLoadingFalse()); // Dispatch an action to set loading to false
+        }
+    };
+}
 const moviesReducer = createReducer<IMovieState>(initialState, {
     'movies/loaded': (state, action: ActionWidthPayload<Movie[]>) => {
         return {
@@ -181,6 +206,17 @@ const moviesReducer = createReducer<IMovieState>(initialState, {
             video: action.payload,
             loading: true,
         };
+    },
+    'movies/popular': (state, action) => {
+        return {
+            ...state,
+            popular: action.payload,
+            loading: false,
+        };
+    },
+    'movies/loadingFalse': (state) => {
+        state.loading = false;
+        return state;
     },
 });
 

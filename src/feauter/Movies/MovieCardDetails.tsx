@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchDatailsMovies, fetchVideoMovies } from '../../reducers/movies';
 import ReactPlayer from 'react-player';
-// import { ModalVideo } from './MovieCardDetails';
+
 // mui
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -18,6 +18,7 @@ import { Modal } from '@mui/material';
 // Types
 import { MovieDetails, Video, VideoResponse } from '../../api/types';
 import { IMovieState } from '../../reducers/types';
+import { LoadingSpinner } from '../spinners/Spinner';
 
 const text = {
     border: '1px solid black',
@@ -75,7 +76,7 @@ function CardFilmDetails() {
             (videoResponse: VideoResponse): boolean =>
                 videoResponse.id === Number(id)
         );
-        // Assuming the first video in the results array is the one you want
+
         const video = videoResponse?.results[0] ?? null;
         setMovieVideo(video);
     }, [id, videos]);
@@ -84,14 +85,7 @@ function CardFilmDetails() {
         handleOpen();
     };
     if (!datails) {
-        return (
-            <Typography
-                variant="h4"
-                sx={{ display: 'flex', justifyContent: 'center' }}
-            >
-                Movie not found
-            </Typography>
-        );
+        return <LoadingSpinner />;
     }
     const {
         title,

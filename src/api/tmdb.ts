@@ -5,6 +5,7 @@ import {
     VideoResponse,
     PageResponse,
     Configuration,
+    Popular,
 } from './types';
 
 async function get<TBody>(relativeUrl: string, params?: any): Promise<TBody> {
@@ -64,5 +65,9 @@ export const client = {
             `/movie/${movieId}/videos?language=ru-RU`
         );
         return response;
+    },
+    async getPopular(): Promise<Popular[]> {
+        const response = await get<PageResponse<Popular>>(`/movie/popular`);
+        return response.results;
     },
 };
