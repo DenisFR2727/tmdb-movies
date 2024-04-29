@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { fetchSearchMovies } from '../../reducers/movies';
 import { useAppDispatch } from '../../hooks/hooks';
 import { SearchIconWrapper, Search, StyledInputBase } from './StyleSearch';
+import FoundMovies from './FoundMoviesCards';
 
 // MUI
 import { CardMedia, Typography } from '@mui/material';
@@ -15,6 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 // Types
 import { IMovieState } from '../../reducers/types';
 
+import { Button } from 'react-bootstrap';
 import './search.scss';
 
 export function SearchAppBar() {
@@ -32,9 +34,15 @@ export function SearchAppBar() {
     };
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="absolute" sx={{ display: 'flex' }}>
-                <Toolbar>
+        <Box
+            sx={{
+                flexGrow: 1,
+            }}
+        >
+            <AppBar position="absolute">
+                <Toolbar
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
+                >
                     <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
@@ -45,7 +53,13 @@ export function SearchAppBar() {
                             value={query}
                             onChange={handleInputChange}
                         />
-                        <button onClick={handleSearchClick}>Search</button>
+                        <Button
+                            variant="outlined"
+                            onClick={handleSearchClick}
+                            style={{ color: 'white' }}
+                        >
+                            Search
+                        </Button>
                     </Search>
                     <Typography sx={{ paddingLeft: '50px' }}>
                         <HeaderLink to="/">Home</HeaderLink>
@@ -54,7 +68,7 @@ export function SearchAppBar() {
             </AppBar>
             {searchResults.length === 0 ? (
                 <Typography
-                    className="not-found-movies"
+                    id="not-found-movies"
                     sx={{
                         paddingTop: '100px',
                         display: 'flex',
@@ -66,15 +80,7 @@ export function SearchAppBar() {
                 </Typography>
             ) : (
                 searchResults.map((movie: any) => (
-                    <div key={movie.id}>
-                        <CardMedia
-                            component={'div'}
-                            image={movie.image}
-                            sx={{ pt: '56.25%' }}
-                        />
-                        <h2>{movie.title}</h2>
-                        <p>{movie.overview}</p>
-                    </div>
+                    <FoundMovies key={movie.id} {...movie} />
                 ))
             )}
         </Box>

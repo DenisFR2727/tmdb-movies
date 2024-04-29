@@ -21,6 +21,8 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { teal } from '@mui/material/colors';
+import FooterMovie from './feauter/footer/Footer';
+import { Height } from '@mui/icons-material';
 
 export function HeaderLink({
     children,
@@ -36,6 +38,7 @@ export function HeaderLink({
             variant="button"
             color="inherit"
             sx={{ mr: 1, mx: 1.5 }}
+            underline="none"
         >
             {children}
         </Link>
@@ -147,10 +150,13 @@ function App() {
             </AppBar>
             <Box
                 className={styles.generalBackground}
-                sx={{ paddingTop: '70px' }}
+                sx={{
+                    paddingTop: '70px',
+                }}
             >
                 <Outlet />
             </Box>
+            <FooterMovie />
         </ThemeProvider>
     );
 }

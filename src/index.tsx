@@ -17,7 +17,7 @@ import Movies from './feauter/Movies/Movies';
 import { SearchMovie } from './feauter/Search/SearchMovie';
 import CardFilmDetails from './feauter/Movies/MovieCardDetails';
 import Home from './feauter/Home/Home';
-
+import './index.scss';
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
