@@ -45,25 +45,33 @@ const setLoadingFalse = () => {
         type: 'movies/loadingFalse',
     };
 };
-export function fetchMovies(): AppThunk<Promise<void>> {
+// Brought the function for optimization to the region.
+const mappedResultsFunc = (
+    results: MovieDetails[],
+    imageUrl: string
+): Movie[] => {
+    return results.map((m) => ({
+        id: m.id,
+        title: m.title,
+        overview: m.overview,
+        popularity: m.popularity,
+        image: m.backdrop_path
+            ? `${imageUrl}w780${m.backdrop_path}`
+            : undefined,
+        budget: m.budget,
+        genres: m.genres,
+        production_companies: m.production_companies,
+    }));
+};
+export function fetchMovies(page: number): AppThunk<Promise<void>> {
     return async (dispatch, getState) => {
         dispatch(moviesLoading());
         // Get
         const config = await client.getConfiguration();
         const imageUrl = config.images.base_url;
-        const results = await client.getNowPlaying();
+        const results = await client.getNowPlaying(page);
 
-        const mappedResults: Movie[] = results.map((m) => ({
-            id: m.id,
-            title: m.title,
-            overview: m.overview,
-            popularity: m.popularity,
-            image: m.backdrop_path
-                ? `${imageUrl}w780${m.backdrop_path}`
-                : undefined,
-            budget: m.budget,
-            production_companies: m.production_companies,
-        }));
+        const mappedResults: Movie[] = mappedResultsFunc(results, imageUrl);
 
         dispatch(moviesLoaded(mappedResults));
     };
@@ -76,17 +84,7 @@ export function fetchSearchMovies(query: string): AppThunk<Promise<void>> {
         const imageUrl = config.images.base_url;
         const results = await client.getSearch(query);
 
-        const mappedResults: Movie[] = results.map((m) => ({
-            id: m.id,
-            title: m.title,
-            overview: m.overview,
-            popularity: m.popularity,
-            image: m.backdrop_path
-                ? `${imageUrl}w780${m.backdrop_path}`
-                : undefined,
-            budget: m.budget,
-            production_companies: m.production_companies,
-        }));
+        const mappedResults: Movie[] = mappedResultsFunc(results, imageUrl);
 
         dispatch(moviesSearch(mappedResults));
     };

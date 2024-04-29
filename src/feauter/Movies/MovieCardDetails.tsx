@@ -143,7 +143,9 @@ function CardFilmDetails() {
                                 {popularity}
                             </Typography>
                             <Box sx={textColumn}>
-                                <Typography>Genres:</Typography>
+                                <Typography sx={{ padding: '10px' }}>
+                                    Genres:
+                                </Typography>
                                 {genres?.map((g, index, array) => (
                                     <Typography
                                         key={g.id}

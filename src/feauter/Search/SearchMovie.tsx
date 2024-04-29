@@ -7,7 +7,7 @@ import { SearchIconWrapper, Search, StyledInputBase } from './StyleSearch';
 import FoundMovies from './FoundMoviesCards';
 
 // MUI
-import { CardMedia, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -20,17 +20,19 @@ import { Button } from 'react-bootstrap';
 import './search.scss';
 
 export function SearchAppBar() {
-    const [query, setQuery] = React.useState<string>('');
     const dispatch = useAppDispatch();
     const searchResults = useSelector(
         (state: { movies: IMovieState }) => state.movies.search
     );
+    const [query, setQuery] = React.useState<string>('');
+
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value);
     };
 
     const handleSearchClick = async () => {
         dispatch(fetchSearchMovies(query));
+        setQuery('');
     };
 
     return (
@@ -52,6 +54,14 @@ export function SearchAppBar() {
                             inputProps={{ 'aria-label': 'search' }}
                             value={query}
                             onChange={handleInputChange}
+                            sx={{
+                                // borderColor: 'white',
+                                outline: 'none',
+                                '&:focus': {
+                                    outline: 'none',
+                                },
+                            }}
+                            id="border"
                         />
                         <Button
                             variant="outlined"
@@ -73,7 +83,6 @@ export function SearchAppBar() {
                         paddingTop: '100px',
                         display: 'flex',
                         justifyContent: 'center',
-                        color: 'black',
                     }}
                 >
                     Movies not Found!

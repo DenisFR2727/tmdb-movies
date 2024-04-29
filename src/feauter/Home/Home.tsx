@@ -43,7 +43,15 @@ function Home({ popular, loading }: PopularProps) {
                         <Carousel.Caption>
                             <h5>{p.title}</h5>
                             <h3>{p.original_title}</h3>
-                            <NavLink to={`/details/${p.id}`}>Open</NavLink>
+                            <NavLink
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'white',
+                                }}
+                                to={`/details/${p.id}`}
+                            >
+                                Open
+                            </NavLink>
                         </Carousel.Caption>
                     </Carousel.Item>
                 ))}

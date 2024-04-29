@@ -38,9 +38,9 @@ export const client = {
         const response = get<Configuration>('/configuration');
         return response;
     },
-    async getNowPlaying(): Promise<MovieDetails[]> {
+    async getNowPlaying(page: number): Promise<MovieDetails[]> {
         const response = await get<PageResponse<MovieDetails>>(
-            '/movie/now_playing?page=1'
+            `/movie/now_playing?page=${page}`
         );
         return response.results;
     },
