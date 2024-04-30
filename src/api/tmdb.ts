@@ -1,4 +1,4 @@
-// import configuration from '../configuration';
+import configuration from '../configuration';
 import axios, { AxiosRequestConfig } from 'axios';
 import {
     MovieDetails,
@@ -13,13 +13,13 @@ async function get<TBody>(relativeUrl: string, params?: any): Promise<TBody> {
         method: 'GET',
         headers: {
             accept: 'application/json',
-            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            Authorization: `Bearer ${configuration.apiToken}`,
         },
         params,
     };
     try {
         const response = await axios.get(
-            `${process.env.REACT_APP_API_URL}/3/${relativeUrl}`,
+            `${configuration.apiUrl}/3/${relativeUrl}`,
             options
         );
 
