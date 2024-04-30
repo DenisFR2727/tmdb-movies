@@ -1,4 +1,5 @@
 import { client } from '../api/tmdb';
+import produce from 'immer';
 
 // Types
 import { Movie, IMovieState } from './types';
@@ -7,49 +8,28 @@ import { VideoResponse, MovieDetails, Popular } from '../api/types';
 import createReducer from '../redux/utils';
 import { ActionWidthPayload } from '../redux/utils';
 import { AppThunk } from '../store';
+import { Dispatch } from 'redux';
+import {
+    moviesDetails,
+    moviesLoaded,
+    moviesLoading,
+    moviesPopular,
+    moviesSearch,
+    moviesVideo,
+    setLoadingFalse,
+} from '../actions';
 
 const initialState: IMovieState = {
     top: [],
     loading: false,
     search: [],
-    datails: [],
+    details: [],
     video: [],
     popular: [],
 };
-// actionCreators
-const moviesLoaded = (movies: Movie[]) => ({
-    type: 'movies/loaded',
-    payload: movies,
-});
-const moviesLoading = () => ({
-    type: 'movies/loading',
-});
-const moviesSearch = (movies: Movie[]) => ({
-    type: 'movies/search',
-    payload: movies,
-});
-const moviesDetails = (movies: Movie[]) => ({
-    type: 'movies/details',
-    payload: movies,
-});
-const moviesVideo = (movies: VideoResponse[]) => ({
-    type: 'movies/video',
-    payload: movies,
-});
-const moviesPopular = (movies: Popular[]) => ({
-    type: 'movies/popular',
-    payload: movies,
-});
-const setLoadingFalse = () => {
-    return {
-        type: 'movies/loadingFalse',
-    };
-};
-// Brought the function for optimization to the region.
-const mappedResultsFunc = (
-    results: MovieDetails[],
-    imageUrl: string
-): Movie[] => {
+
+// optimization function mapped
+function mappedResultMovies(results: Movie[], imageUrl: string) {
     return results.map((m) => ({
         id: m.id,
         title: m.title,
@@ -59,41 +39,41 @@ const mappedResultsFunc = (
             ? `${imageUrl}w780${m.backdrop_path}`
             : undefined,
         budget: m.budget,
-        genres: m.genres,
         production_companies: m.production_companies,
     }));
-};
+}
+// Optimization imageUrl
+async function fetchConfigAndReturnImageUrl(
+    dispatch: Dispatch
+): Promise<string> {
+    dispatch(moviesLoading());
+    const config = await client.getConfiguration();
+    const imageUrl = config.images.base_url;
+    return imageUrl;
+}
 export function fetchMovies(page: number): AppThunk<Promise<void>> {
     return async (dispatch, getState) => {
-        dispatch(moviesLoading());
-        // Get
-        const config = await client.getConfiguration();
-        const imageUrl = config.images.base_url;
+        const imageUrl = await fetchConfigAndReturnImageUrl(dispatch);
         const results = await client.getNowPlaying(page);
 
-        const mappedResults: Movie[] = mappedResultsFunc(results, imageUrl);
-
+        const mappedResults: Movie[] = mappedResultMovies(results, imageUrl);
         dispatch(moviesLoaded(mappedResults));
     };
 }
 // Search
 export function fetchSearchMovies(query: string): AppThunk<Promise<void>> {
     return async (dispatch, getState) => {
-        dispatch(moviesLoading());
-        const config = await client.getConfiguration();
-        const imageUrl = config.images.base_url;
+        const imageUrl = await fetchConfigAndReturnImageUrl(dispatch);
         const results = await client.getSearch(query);
 
-        const mappedResults: Movie[] = mappedResultsFunc(results, imageUrl);
-
+        const mappedResults: Movie[] = mappedResultMovies(results, imageUrl);
         dispatch(moviesSearch(mappedResults));
     };
 }
-export function fetchDatailsMovies(movieId: number): AppThunk<Promise<void>> {
+// Deteils
+export function fetchDetailsMovies(movieId: number): AppThunk<Promise<void>> {
     return async (dispatch, getState) => {
-        dispatch(moviesLoading());
-        const config = await client.getConfiguration();
-        const imageUrl = config.images.base_url;
+        const imageUrl = await fetchConfigAndReturnImageUrl(dispatch);
         const m = await client.getDetails(movieId);
 
         const mappedResults: MovieDetails = {
@@ -108,7 +88,6 @@ export function fetchDatailsMovies(movieId: number): AppThunk<Promise<void>> {
             genres: m.genres,
             production_companies: m.production_companies,
         };
-
         dispatch(moviesDetails([mappedResults]));
     };
 }
@@ -135,16 +114,13 @@ export function fetchVideoMovies(videoId: number): AppThunk<Promise<void>> {
                 id: m.id,
             })),
         };
-
         dispatch(moviesVideo([mappedResults]));
     };
 }
 export function fetchPopularMovie(): AppThunk<Promise<void>> {
     return async (dispatch, getState) => {
         try {
-            dispatch(moviesLoading());
-            const config = await client.getConfiguration();
-            const imageUrl = config.images.base_url;
+            const imageUrl = await fetchConfigAndReturnImageUrl(dispatch);
             const popular = await client.getPopular();
 
             const mappedResults: Popular[] = popular.map((m) => ({
@@ -171,51 +147,33 @@ export function fetchPopularMovie(): AppThunk<Promise<void>> {
     };
 }
 const moviesReducer = createReducer<IMovieState>(initialState, {
-    'movies/loaded': (state, action: ActionWidthPayload<Movie[]>) => {
-        return {
-            ...state,
-            top: action.payload,
-            loading: false,
-        };
-    },
-    'movies/loading': (state, action) => {
-        return {
-            ...state,
-            loading: true,
-        };
-    },
-    'movies/search': (state, action) => {
-        return {
-            ...state,
-            search: action.payload,
-            loading: true,
-        };
-    },
-    'movies/details': (state, action) => {
-        return {
-            ...state,
-            datails: action.payload,
-            loading: true,
-        };
-    },
-    'movies/video': (state, action) => {
-        return {
-            ...state,
-            video: action.payload,
-            loading: true,
-        };
-    },
-    'movies/popular': (state, action) => {
-        return {
-            ...state,
-            popular: action.payload,
-            loading: false,
-        };
-    },
-    'movies/loadingFalse': (state) => {
+    'movies/loaded': produce((state, action) => {
+        state.top = action.payload;
+        state.loading = false;
+    }),
+    'movies/loading': produce((state, action) => {
+        state.loading = true;
+    }),
+    'movies/search': produce((state, action) => {
+        state.search = action.payload;
+        state.loading = true;
+    }),
+    'movies/details': produce((state, action) => {
+        state.details = action.payload;
+        state.loading = true;
+    }),
+    'movies/video': produce((state, action) => {
+        state.video = action.payload;
+        state.loading = true;
+    }),
+    'movies/popular': produce((state, action) => {
+        state.popular = action.payload;
+        state.loading = false;
+    }),
+    'movies/loadingFalse': produce((state) => {
         state.loading = false;
         return state;
-    },
+    }),
 });
 
 export default moviesReducer;

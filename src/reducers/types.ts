@@ -19,7 +19,7 @@ interface IMovieState {
     top: Movie[];
     loading: boolean;
     search: Movie[];
-    datails: Movie[];
+    details: Movie[];
     video: VideoResponse[];
     popular: Popular[];
 }

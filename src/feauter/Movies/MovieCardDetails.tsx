@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/hooks';
-import { fetchDatailsMovies, fetchVideoMovies } from '../../reducers/movies';
+import { fetchDetailsMovies, fetchVideoMovies } from '../../reducers/movies';
 import ReactPlayer from 'react-player';
 
 // mui
@@ -46,12 +46,12 @@ function CardFilmDetails() {
     const { id } = useParams<string>();
     const dispatch = useAppDispatch();
     const movies = useSelector(
-        (state: { movies: IMovieState }) => state.movies.datails
+        (state: { movies: IMovieState }) => state.movies.details
     );
     const videos = useSelector(
         (state: { movies: IMovieState }) => state.movies.video
     );
-    const [datails, setDatails] = useState<MovieDetails | null>(null);
+    const [datails, setDetails] = useState<MovieDetails | null>(null);
     const [movieVideo, setMovieVideo] = useState<Video | null>(null);
     const [open, setOpen] = useState(false);
 
@@ -59,7 +59,7 @@ function CardFilmDetails() {
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
-        dispatch(fetchDatailsMovies(Number(id)));
+        dispatch(fetchDetailsMovies(Number(id)));
         dispatch(fetchVideoMovies(Number(id)));
     }, [id, dispatch]);
 
@@ -67,7 +67,7 @@ function CardFilmDetails() {
         const movie = movies.find(
             (movie: MovieDetails): boolean => movie.id === Number(id)
         );
-        setDatails(movie ?? null);
+        setDetails(movie ?? null);
     }, [id, movies]);
 
     //  find video to id
