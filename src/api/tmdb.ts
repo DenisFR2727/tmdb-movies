@@ -19,7 +19,7 @@ async function get<TBody>(relativeUrl: string, params?: any): Promise<TBody> {
     };
     try {
         const response = await axios.get(
-            `${params.env.REACT_APP_API_URL}/3/${relativeUrl}`,
+            `${process.env.REACT_APP_API_URL}/3/${relativeUrl}`,
             options
         );
 
