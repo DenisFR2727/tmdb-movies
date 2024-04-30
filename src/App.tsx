@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link as RouterLink, Outlet, NavLink } from 'react-router-dom';
+import { Link as RouterLink, Outlet } from 'react-router-dom';
+import FooterMovie from './feauter/footer/Footer';
 
 import styles from './App.module.scss';
 import {
@@ -21,8 +22,6 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { teal } from '@mui/material/colors';
-import FooterMovie from './feauter/footer/Footer';
-import { Height } from '@mui/icons-material';
 
 export function HeaderLink({
     children,

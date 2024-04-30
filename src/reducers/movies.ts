@@ -147,29 +147,35 @@ export function fetchPopularMovie(): AppThunk<Promise<void>> {
     };
 }
 const moviesReducer = createReducer<IMovieState>(initialState, {
-    'movies/loaded': produce((state, action) => {
+    'movies/loaded': produce((state, action: ActionWidthPayload<Movie[]>) => {
         state.top = action.payload;
         state.loading = false;
     }),
     'movies/loading': produce((state, action) => {
         state.loading = true;
     }),
-    'movies/search': produce((state, action) => {
+    'movies/search': produce((state, action: ActionWidthPayload<Movie[]>) => {
         state.search = action.payload;
         state.loading = true;
     }),
-    'movies/details': produce((state, action) => {
-        state.details = action.payload;
-        state.loading = true;
-    }),
-    'movies/video': produce((state, action) => {
-        state.video = action.payload;
-        state.loading = true;
-    }),
-    'movies/popular': produce((state, action) => {
-        state.popular = action.payload;
-        state.loading = false;
-    }),
+    'movies/details': produce(
+        (state, action: ActionWidthPayload<MovieDetails[]>) => {
+            state.details = action.payload;
+            state.loading = true;
+        }
+    ),
+    'movies/video': produce(
+        (state, action: ActionWidthPayload<VideoResponse[]>) => {
+            state.video = action.payload;
+            state.loading = true;
+        }
+    ),
+    'movies/popular': produce(
+        (state, action: ActionWidthPayload<Popular[]>) => {
+            state.popular = action.payload;
+            state.loading = false;
+        }
+    ),
     'movies/loadingFalse': produce((state) => {
         state.loading = false;
         return state;

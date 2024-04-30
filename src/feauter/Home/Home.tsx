@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { fetchPopularMovie } from '../../reducers/movies';
 import { useAppDispatch } from '../../hooks/hooks';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
 import { Popular } from '../../api/types';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Carousel from 'react-bootstrap/Carousel';
-import { Button, Image, Spinner } from 'react-bootstrap';
-
-import './home.scss';
 import { NavLink } from 'react-router-dom';
 import { LoadingSpinner } from '../spinners/Spinner';
+
+// Bootstrap
+import Carousel from 'react-bootstrap/Carousel';
+import { Image } from 'react-bootstrap';
+
+import './home.scss';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface PopularProps {
     popular: Popular[];
