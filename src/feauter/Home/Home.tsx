@@ -32,7 +32,7 @@ function Home({ popular, loading }: PopularProps) {
     return (
         <section className="carusel-section">
             <h2>Popular Movie</h2>
-            <Carousel className="carusel-item">
+            <Carousel id="carusel-item-mobile" className="carusel-item">
                 {popular.map((p) => (
                     <Carousel.Item key={p.id}>
                         <Image
