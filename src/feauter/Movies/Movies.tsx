@@ -21,7 +21,7 @@ export interface MoviesProps {
 function Movies({ movies, loading }: MoviesProps) {
     const dispatch = useAppDispatch();
     const [page, setPage] = useState<number>(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 6;
 
     useEffect(() => {
         dispatch(fetchMovies(page));

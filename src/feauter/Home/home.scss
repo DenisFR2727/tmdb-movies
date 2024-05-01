@@ -47,3 +47,16 @@
     display: flex;
     justify-content: center;
 }
+@media screen and (orientation: landscape) and (max-width: 950px) {
+    .carusel-section {
+        h2 {
+            display: flex;
+            padding-top: 10%;
+            padding-left: 20px;
+        }
+        #carusel-item-mobile {
+            width: 220px;
+            top: 70;
+        }
+    }
+}
