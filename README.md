@@ -14,7 +14,7 @@
 --Player:
       -react-player npm i react-player;
 --Api:
-      -axios npm i axios;
+      -axios npm i axios;-
       
       
       
