@@ -13,3 +13,5 @@
 --Player:
 -react-player npm i react-player;
 --Api: -axios npm i axios;
+
+View netlify -- https://tmdb-movies-trailer.netlify.app/
