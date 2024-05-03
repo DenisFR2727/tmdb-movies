@@ -8,11 +8,11 @@
     background-position: center;
     background-size: cover;
 
-    @media (max-width: 500px) {
-        #carusel-item-mobile {
-            width: 300px;
-        }
-    }
+    // @media (max-width: 500px) {
+    //     #carusel-item-mobile {
+    //         width: 100px;
+    //     }
+    // }
 
     h2 {
         position: absolute;
@@ -32,6 +32,7 @@
         transform: translate(-50%, -50%);
         width: 100%;
         max-width: 600px;
+        // padding-top: 200px;
 
         @media (max-width: 600px) {
             top: 45%;
