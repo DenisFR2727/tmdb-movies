@@ -58,7 +58,6 @@ function App() {
     const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
     };
-
     const drawer = (
         <div>
             <List

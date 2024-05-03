@@ -7,7 +7,7 @@ import {
     BsInstagram,
     BsTwitter,
 } from 'react-icons/bs';
-
+import './footer.scss';
 const colorSocials = {
     color: 'white',
 };
@@ -47,10 +47,13 @@ const FooterMovie = () => {
                 <div className="w-full sm:flex sm:items-center sm:justify-between">
                     <Footer.Copyright
                         href="#"
-                        by="The Movies DB™"
+                        by=""
+                        style={colorSocials}
                         year={2024}
                     />
+
                     <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
+                        <p className="socials-text">The Socials:</p>
                         <Footer.Icon
                             style={colorSocials}
                             href="#"

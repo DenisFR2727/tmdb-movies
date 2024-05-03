@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Movie } from '../../reducers/types';
 import { fetchMovies } from '../../reducers/movies';
 
@@ -12,6 +12,7 @@ import PaginationRounded from '../pagination/Pagination';
 import { Container } from '@mui/system';
 import { Grid, LinearProgress, Typography } from '@mui/material';
 import './movies.scss';
+import usePagination from '../../hooks/pagination';
 
 export interface MoviesProps {
     movies: Movie[];
@@ -20,16 +21,12 @@ export interface MoviesProps {
 
 function Movies({ movies, loading }: MoviesProps) {
     const dispatch = useAppDispatch();
-    const [page, setPage] = useState<number>(1);
-    const itemsPerPage = 6;
+    const { page, itemsPerPage, handlePageChange } = usePagination();
 
     useEffect(() => {
         dispatch(fetchMovies(page));
     }, [dispatch, page]);
 
-    const handlePageChange = (_: any, value: number) => {
-        setPage(value);
-    };
     return (
         <Container sx={{ py: 8, paddingTop: '0px' }} maxWidth="lg">
             <Typography

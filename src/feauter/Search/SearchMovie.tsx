@@ -41,7 +41,7 @@ export function SearchAppBar() {
                 flexGrow: 1,
             }}
         >
-            <AppBar position="absolute">
+            <AppBar position="fixed">
                 <Toolbar
                     sx={{ display: 'flex', justifyContent: 'space-between' }}
                 >
@@ -55,7 +55,6 @@ export function SearchAppBar() {
                             value={query}
                             onChange={handleInputChange}
                             sx={{
-                                // borderColor: 'white',
                                 outline: 'none',
                                 '&:focus': {
                                     outline: 'none',
