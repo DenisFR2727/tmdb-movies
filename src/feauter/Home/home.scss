@@ -13,6 +13,7 @@
             width: 300px;
         }
     }
+
     h2 {
         position: absolute;
         top: 70px;
@@ -31,6 +32,7 @@
         transform: translate(-50%, -50%);
         width: 100%;
         max-width: 600px;
+
         @media (max-width: 600px) {
             top: 45%;
             width: 100%;
@@ -45,6 +47,9 @@
             top: 50%;
             width: 100%;
             max-width: 320px;
+        }
+        @media (max-width: 376px) {
+            padding-top: 200px;
         }
     }
 }
