@@ -22,6 +22,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { teal } from '@mui/material/colors';
+import useScrollUp from './hooks/scrollUp';
 
 export function HeaderLink({
     children,
@@ -54,6 +55,7 @@ const defaultTheme = createTheme({
 function App() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const isMobile = useMediaQuery(defaultTheme.breakpoints.down('sm'));
+    const { isVisible, handleClick } = useScrollUp();
 
     const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
@@ -153,6 +155,20 @@ function App() {
                 }}
             >
                 <Outlet />
+                {isVisible && (
+                    <img
+                        width="50"
+                        height="50"
+                        onClick={handleClick}
+                        style={{
+                            position: 'fixed',
+                            bottom: '20px',
+                            right: '20px',
+                        }}
+                        src="https://img.icons8.com/external-others-pike-picture/50/external-Scroll-Up-scroll-others-pike-picture.png"
+                        alt="pic"
+                    />
+                )}
             </Box>
             <FooterMovie />
         </ThemeProvider>

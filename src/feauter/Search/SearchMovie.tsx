@@ -7,7 +7,7 @@ import { SearchIconWrapper, Search, StyledInputBase } from './StyleSearch';
 import FoundMovies from './FoundMoviesCards';
 
 // MUI
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,9 +18,12 @@ import { IMovieState } from '../../reducers/types';
 
 import { Button } from 'react-bootstrap';
 import './search.scss';
+import usePagination from '../../hooks/pagination';
+import PaginationRounded from '../pagination/Pagination';
 
 export function SearchAppBar() {
     const dispatch = useAppDispatch();
+    const { page, itemsPerPage, handlePageChange } = usePagination();
     const searchResults = useSelector(
         (state: { movies: IMovieState }) => state.movies.search
     );
@@ -87,9 +90,29 @@ export function SearchAppBar() {
                     Movies not Found!
                 </Typography>
             ) : (
-                searchResults.map((movie: any) => (
-                    <FoundMovies key={movie.id} {...movie} />
-                ))
+                searchResults
+                    .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+                    .map((movie: any) => (
+                        <FoundMovies key={movie.id} {...movie} />
+                    ))
+            )}
+            {searchResults.length > 0 && (
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        paddingTop: '20px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        paddingBottom: '20px',
+                    }}
+                >
+                    <PaginationRounded
+                        count={Math.ceil(searchResults.length / itemsPerPage)}
+                        page={page}
+                        handlePageChange={handlePageChange}
+                    />
+                </Grid>
             )}
         </Box>
     );
