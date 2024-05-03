@@ -33,7 +33,9 @@
         width: 100%;
         max-width: 600px;
         // padding-top: 200px;
-
+        .carousel-inner {
+            border-radius: 20px;
+        }
         @media (max-width: 600px) {
             top: 45%;
             width: 100%;
