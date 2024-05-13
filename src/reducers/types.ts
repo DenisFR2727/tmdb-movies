@@ -1,6 +1,7 @@
 import {
     Genres,
     Popular,
+    PopularTVSeries,
     Production_companies,
     VideoResponse,
 } from '../api/types';
@@ -22,5 +23,6 @@ interface IMovieState {
     details: Movie[];
     video: VideoResponse[];
     popular: Popular[];
+    seriesTop: PopularTVSeries[];
 }
 export type { Movie, IMovieState };

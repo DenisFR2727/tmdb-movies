@@ -57,6 +57,24 @@ interface Configuration {
         base_url: string;
     };
 }
+// PopularTVSeries
+type Genre = Array<string>;
+type OriginCountry = Array<number>;
+interface PopularTVSeries {
+    backdrop_path: string | undefined;
+    first_air_date: string;
+    genre_ids: Genre;
+    id: number;
+    name: string;
+    origin_country: OriginCountry;
+    original_language: string;
+    original_name: string;
+    overview: string;
+    popularity: number;
+    poster_path: string;
+    vote_average: number;
+    vote_count: number;
+}
 export type {
     Genres,
     Production_companies,
@@ -66,4 +84,5 @@ export type {
     PageResponse,
     Configuration,
     Popular,
+    PopularTVSeries,
 };

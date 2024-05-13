@@ -3,7 +3,12 @@ import produce from 'immer';
 
 // Types
 import { Movie, IMovieState } from './types';
-import { VideoResponse, MovieDetails, Popular } from '../api/types';
+import {
+    VideoResponse,
+    MovieDetails,
+    Popular,
+    PopularTVSeries,
+} from '../api/types';
 
 import createReducer from '../redux/utils';
 import { ActionWidthPayload } from '../redux/utils';
@@ -16,6 +21,7 @@ import {
     moviesPopular,
     moviesSearch,
     moviesVideo,
+    serialsPopular,
     setLoadingFalse,
 } from '../actions';
 
@@ -26,6 +32,7 @@ const initialState: IMovieState = {
     details: [],
     video: [],
     popular: [],
+    seriesTop: [],
 };
 
 // optimization function mapped
@@ -146,6 +153,31 @@ export function fetchPopularMovie(): AppThunk<Promise<void>> {
         }
     };
 }
+export function fetchPopularTVSeries(): AppThunk<Promise<void>> {
+    return async (dispatch, getState) => {
+        const imageUrl = await fetchConfigAndReturnImageUrl(dispatch);
+        const m = await client.getTVTopRated();
+
+        const mappedResults: PopularTVSeries[] = m.map((m) => ({
+            backdrop_path: m.poster_path
+                ? `${imageUrl}w300${m.backdrop_path}`
+                : undefined,
+            first_air_date: m.first_air_date,
+            genre_ids: m.genre_ids,
+            id: m.id,
+            name: m.name,
+            origin_country: m.origin_country,
+            original_language: m.original_language,
+            original_name: m.original_name,
+            overview: m.overview,
+            popularity: m.popularity,
+            poster_path: m.poster_path,
+            vote_average: m.vote_average,
+            vote_count: m.vote_count,
+        }));
+        dispatch(serialsPopular(mappedResults));
+    };
+}
 const moviesReducer = createReducer<IMovieState>(initialState, {
     'movies/loaded': produce((state, action: ActionWidthPayload<Movie[]>) => {
         state.top = action.payload;
@@ -180,6 +212,12 @@ const moviesReducer = createReducer<IMovieState>(initialState, {
         state.loading = false;
         return state;
     }),
+    'movies/TVpopular': produce(
+        (state, action: ActionWidthPayload<PopularTVSeries[]>) => {
+            state.seriesTop = action.payload;
+            state.loading = false;
+        }
+    ),
 });
 
 export default moviesReducer;

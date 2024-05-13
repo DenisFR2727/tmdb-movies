@@ -142,7 +142,7 @@ function App() {
                         <nav>
                             <HeaderLink to="/">Home</HeaderLink>
                             <HeaderLink to="/search">Search</HeaderLink>
-                            <HeaderLink to="/about">About</HeaderLink>
+                            <HeaderLink to="/tvseries">TV Series</HeaderLink>
                             <HeaderLink to="/movies">Movies</HeaderLink>
                         </nav>
                     )}

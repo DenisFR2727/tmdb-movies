@@ -10,7 +10,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import { About } from './feauter/About/About';
+import { TVSeries } from './feauter/TV/TVSeries';
 import { Provider } from 'react-redux';
 import store from './store';
 import Movies from './feauter/Movies/Movies';
@@ -26,7 +26,7 @@ ReactDOM.render(
                     <Route path="/" element={<App />}>
                         <Route path="/" element={<Home />} />
                         <Route path="search" element={<SearchMovie />} />
-                        <Route path="about" element={<About />} />
+                        <Route path="tvseries" element={<TVSeries />} />
                         <Route path="movies" element={<Movies />} />
                         <Route
                             path="details/:id"

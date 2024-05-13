@@ -6,6 +6,7 @@ import {
     PageResponse,
     Configuration,
     Popular,
+    PopularTVSeries,
 } from './types';
 
 async function get<TBody>(relativeUrl: string, params?: any): Promise<TBody> {
@@ -69,5 +70,17 @@ export const client = {
     async getPopular(): Promise<Popular[]> {
         const response = await get<PageResponse<Popular>>(`/movie/popular`);
         return response.results;
+    },
+    async getTVTopRated(): Promise<PopularTVSeries[]> {
+        try {
+            const response = await get<PageResponse<PopularTVSeries>>(
+                `/tv/top_rated?language=en-US&page=1`
+            );
+            console.log(response);
+            return response.results;
+        } catch (error) {
+            console.error('Error getting top rated TV series:', error);
+            throw error;
+        }
     },
 };

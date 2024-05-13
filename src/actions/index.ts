@@ -1,4 +1,4 @@
-import { Popular, VideoResponse } from '../api/types';
+import { Popular, PopularTVSeries, VideoResponse } from '../api/types';
 import { Movie } from '../reducers/types';
 
 // actionCreators
@@ -30,6 +30,12 @@ const setLoadingFalse = () => {
         type: 'movies/loadingFalse',
     };
 };
+const serialsPopular = (series: PopularTVSeries[]) => {
+    return {
+        type: 'movies/TVpopular',
+        payload: series,
+    };
+};
 export {
     moviesLoaded,
     moviesLoading,
@@ -38,4 +44,5 @@ export {
     moviesVideo,
     moviesPopular,
     setLoadingFalse,
+    serialsPopular,
 };
