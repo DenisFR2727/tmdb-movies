@@ -10,7 +10,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import { TVSeries } from './feauter/TV/TVSeries';
+import TVSeries from './feauter/TV/TVSeries';
 import { Provider } from 'react-redux';
 import store from './store';
 import Movies from './feauter/Movies/Movies';

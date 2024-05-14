@@ -71,7 +71,7 @@ interface PopularTVSeries {
     original_name: string;
     overview: string;
     popularity: number;
-    poster_path: string;
+    poster_path: string | undefined;
     vote_average: number;
     vote_count: number;
 }

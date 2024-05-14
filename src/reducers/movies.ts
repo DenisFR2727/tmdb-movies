@@ -171,7 +171,9 @@ export function fetchPopularTVSeries(): AppThunk<Promise<void>> {
             original_name: m.original_name,
             overview: m.overview,
             popularity: m.popularity,
-            poster_path: m.poster_path,
+            poster_path: m.poster_path
+                ? `${imageUrl}w300${m.poster_path}`
+                : undefined,
             vote_average: m.vote_average,
             vote_count: m.vote_count,
         }));

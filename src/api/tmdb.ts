@@ -72,15 +72,9 @@ export const client = {
         return response.results;
     },
     async getTVTopRated(): Promise<PopularTVSeries[]> {
-        try {
-            const response = await get<PageResponse<PopularTVSeries>>(
-                `/tv/top_rated?language=en-US&page=1`
-            );
-            console.log(response);
-            return response.results;
-        } catch (error) {
-            console.error('Error getting top rated TV series:', error);
-            throw error;
-        }
+        const response = await get<PageResponse<PopularTVSeries>>(
+            `/tv/top_rated?language=en-US&page=1`
+        );
+        return response.results;
     },
 };
