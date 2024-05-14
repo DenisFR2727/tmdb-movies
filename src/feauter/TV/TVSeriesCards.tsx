@@ -65,17 +65,7 @@ function TVSeriesCards({
                     color="text.secondary"
                 >
                     {hiddenText ? `${overview.slice(0, 50)}` : overview}
-                    {hiddenText ? (
-                        <Button
-                            sx={{
-                                fontSize: '10px',
-                                marginTop: '0px',
-                                letterSpacing: '2px',
-                                padding: '0',
-                            }}
-                            onClick={openOverview}
-                        >{`...more`}</Button>
-                    ) : (
+                    {
                         <Button
                             sx={{
                                 fontSize: '10px',
@@ -85,12 +75,11 @@ function TVSeriesCards({
                             }}
                             onClick={openOverview}
                         >
-                            {`up`}
+                            {hiddenText ? `...more` : `up`}
                         </Button>
-                    )}
+                    }
                     <CardMedia
                         component="img"
-                        // height="max-content"
                         image={backdrop_path}
                         alt={name}
                         sx={{ marginTop: '10px' }}

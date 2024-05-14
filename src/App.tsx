@@ -93,7 +93,7 @@ function App() {
                                     bottom: 0,
                                     left: '50%',
                                     backgroundColor: 'white',
-                                    transition: 'all 0.3s ease-in-out',
+                                    // transition: 'all 0.3s ease-in-out',
                                 },
                                 '&:hover::before': {
                                     width: '100%',
