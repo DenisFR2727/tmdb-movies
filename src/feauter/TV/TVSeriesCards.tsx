@@ -43,7 +43,6 @@ function TVSeriesCards({
                 maxWidth: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                transition: 'height 2s ease-in-out',
                 overflow: 'hidden',
             }}
         >

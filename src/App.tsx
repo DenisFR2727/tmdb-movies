@@ -69,7 +69,7 @@ function App() {
                     width: '100px',
                 }}
             >
-                {['Search', 'About', 'Movies', 'Home'].map((text, index) => (
+                {['Search', 'TVSeries', 'Movies', 'Home'].map((text, index) => (
                     <ListItem
                         key={text}
                         component={RouterLink}
