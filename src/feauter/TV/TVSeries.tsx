@@ -9,12 +9,9 @@ import {
     Box,
     Grid,
     LinearProgress,
-    Card,
     Typography,
     Container,
 } from '@mui/material';
-// import { Container } from 'react-bootstrap';
-// import { Card } from 'flowbite-react';
 
 interface SeriesProps {
     series: PopularTVSeries[];
