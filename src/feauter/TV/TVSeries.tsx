@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { RootState } from '../../store';
 import { PopularTVSeries } from '../../api/types';
 import TVSeriesCards from './TVSeriesCards';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, LinearProgress, Card, Typography } from '@mui/material';
+// import { Card } from 'flowbite-react';
 
 interface SeriesProps {
     series: PopularTVSeries[];
@@ -19,19 +20,43 @@ function TVSeries({ series, loading }: SeriesProps) {
     }, [dispatch]);
 
     return (
-        <Grid
-            container
-            spacing={2}
-            sx={{ display: 'flex', alignItems: 'stretch' }}
-        >
-            {series.map((s) => (
-                <Grid key={s.id} item xs={12} sm={6} md={4} lg={3}>
-                    <Box height="100%">
-                        <TVSeriesCards {...s} />
-                    </Box>
+        <Box>
+            <p
+                id="movies-top"
+                style={{ display: 'flex', justifyContent: 'center' }}
+            >
+                Series
+            </p>
+            {loading ? (
+                <LinearProgress
+                    sx={{
+                        marginTopTop: '100px',
+                        background: 'red',
+                        width: '60%',
+                        margin: '0 auto',
+                    }}
+                    color="secondary"
+                />
+            ) : (
+                <Grid
+                    container
+                    spacing={2}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'stretch',
+                        marginTop: '20px',
+                    }}
+                >
+                    {series.map((s) => (
+                        <Grid key={s.id} item xs={12} sm={6} md={4} lg={3}>
+                            <Box height="100%">
+                                <TVSeriesCards {...s} />
+                            </Box>
+                        </Grid>
+                    ))}
                 </Grid>
-            ))}
-        </Grid>
+            )}
+        </Box>
     );
 }
 const mapStateToProps = (state: RootState) => ({

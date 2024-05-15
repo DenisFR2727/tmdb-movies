@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import { PopularTVSeries } from '../../api/types';
 import { Button } from '@mui/material';
 import { useSpring, animated } from '@react-spring/web';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 const AnimatedCard = animated(Typography);
 function TVSeriesCards({
     backdrop_path,
@@ -21,6 +23,8 @@ function TVSeriesCards({
     const [props, set] = useSpring(() => ({
         paddingTop: '0px',
     }));
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const year: string = first_air_date.slice(0, 4);
     const rating: string = vote_average.toFixed(1);
     const country: string = origin_country.map((c) => c).join('');
@@ -40,20 +44,24 @@ function TVSeriesCards({
                 flexBasis: '200px',
                 marginLeft: '1rem',
                 marginRight: '1rem',
-                maxWidth: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 overflow: 'hidden',
             }}
         >
-            <CardMedia
-                component="img"
-                height="140"
-                image={poster_path}
-                alt={name}
-            />
+            <CardContent sx={{ height: '100%' }}>
+                <CardMedia component="img" image={poster_path} alt={name} />
+            </CardContent>
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    sx={{
+                        textOverflow: 'ellipsis',
+                        fontSize: isSmallScreen ? '24px' : '18px',
+                    }}
+                >
                     {name}
                 </Typography>
                 <Typography>Year: {year}</Typography>
@@ -82,7 +90,6 @@ function TVSeriesCards({
                         component="img"
                         image={backdrop_path}
                         alt={name}
-                        sx={{ marginTop: '10px' }}
                     />
                 </AnimatedCard>
             </CardContent>
