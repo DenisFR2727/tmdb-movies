@@ -21,16 +21,14 @@ function TVSeries({ series, loading }: SeriesProps) {
 
     return (
         <Box>
-            <p
-                id="movies-top"
-                style={{
-                    display: 'flex',
-                    paddingBottom: '80px',
-                    justifyContent: 'center',
-                }}
+            <Typography
+                sx={{ marginTop: '10px' }}
+                variant="h4"
+                align="center"
+                gutterBottom
             >
-                Series
-            </p>
+                <p id="movies-top">Series</p>
+            </Typography>
             {loading ? (
                 <LinearProgress
                     sx={{
