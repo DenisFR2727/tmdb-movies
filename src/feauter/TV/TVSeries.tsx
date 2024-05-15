@@ -23,7 +23,11 @@ function TVSeries({ series, loading }: SeriesProps) {
         <Box>
             <p
                 id="movies-top"
-                style={{ display: 'flex', justifyContent: 'center' }}
+                style={{
+                    display: 'flex',
+                    paddingBottom: '80px',
+                    justifyContent: 'center',
+                }}
             >
                 Series
             </p>
