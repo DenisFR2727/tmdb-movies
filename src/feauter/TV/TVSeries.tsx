@@ -5,7 +5,15 @@ import { connect } from 'react-redux';
 import { RootState } from '../../store';
 import { PopularTVSeries } from '../../api/types';
 import TVSeriesCards from './TVSeriesCards';
-import { Box, Grid, LinearProgress, Card, Typography } from '@mui/material';
+import {
+    Box,
+    Grid,
+    LinearProgress,
+    Card,
+    Typography,
+    Container,
+} from '@mui/material';
+// import { Container } from 'react-bootstrap';
 // import { Card } from 'flowbite-react';
 
 interface SeriesProps {
@@ -20,7 +28,7 @@ function TVSeries({ series, loading }: SeriesProps) {
     }, [dispatch]);
 
     return (
-        <Box>
+        <Container>
             <Typography
                 sx={{ marginTop: '10px' }}
                 variant="h4"
@@ -58,7 +66,7 @@ function TVSeries({ series, loading }: SeriesProps) {
                     ))}
                 </Grid>
             )}
-        </Box>
+        </Container>
     );
 }
 const mapStateToProps = (state: RootState) => ({
