@@ -7,6 +7,7 @@ import {
     Configuration,
     Popular,
     PopularTVSeries,
+    VideoResponseSeries,
 } from './types';
 
 async function get<TBody>(relativeUrl: string, params?: any): Promise<TBody> {
@@ -76,5 +77,11 @@ export const client = {
             `/tv/top_rated?language=en-US&page=1`
         );
         return response.results;
+    },
+    async getVideoSeries(movieId: number): Promise<VideoResponseSeries> {
+        const response = await get<VideoResponseSeries>(
+            `/tv/${movieId}/videos?language=en-RU`
+        );
+        return response;
     },
 };

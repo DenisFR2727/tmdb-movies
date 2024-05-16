@@ -53,7 +53,7 @@ function CardFilmDetails() {
     );
     const [datails, setDetails] = useState<MovieDetails | null>(null);
     const [movieVideo, setMovieVideo] = useState<Video | null>(null);
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);

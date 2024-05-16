@@ -1,4 +1,9 @@
-import { Popular, PopularTVSeries, VideoResponse } from '../api/types';
+import {
+    Popular,
+    PopularTVSeries,
+    VideoResponse,
+    VideoResponseSeries,
+} from '../api/types';
 import { Movie } from '../reducers/types';
 
 // actionCreators
@@ -30,10 +35,27 @@ const setLoadingFalse = () => {
         type: 'movies/loadingFalse',
     };
 };
+// Series
 const serialsPopular = (series: PopularTVSeries[]) => {
     return {
         type: 'movies/TVpopular',
         payload: series,
+    };
+};
+const serialsPopularVideo = (series: VideoResponseSeries[]) => {
+    return {
+        type: 'movies/videoSeries',
+        payload: series,
+    };
+};
+const tvSeriesLoading = () => {
+    return {
+        type: 'movies/tvSeriesLoading',
+    };
+};
+const videoSeriesLoading = () => {
+    return {
+        type: 'movies/videoSeriesLoading',
     };
 };
 export {
@@ -45,4 +67,7 @@ export {
     moviesPopular,
     setLoadingFalse,
     serialsPopular,
+    serialsPopularVideo,
+    tvSeriesLoading,
+    videoSeriesLoading,
 };

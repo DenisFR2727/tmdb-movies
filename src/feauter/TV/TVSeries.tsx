@@ -15,11 +15,17 @@ import {
 
 interface SeriesProps {
     series: PopularTVSeries[];
-    loading: boolean;
+    loadingTVSeries: boolean;
+    loadingVideoSeries: boolean;
 }
 
-function TVSeries({ series, loading }: SeriesProps) {
+function TVSeries({
+    series,
+    loadingTVSeries,
+    loadingVideoSeries,
+}: SeriesProps) {
     const dispatch = useAppDispatch();
+    const loading = loadingTVSeries || loadingVideoSeries;
     useEffect(() => {
         dispatch(fetchPopularTVSeries());
     }, [dispatch]);
@@ -34,7 +40,7 @@ function TVSeries({ series, loading }: SeriesProps) {
             >
                 <p id="movies-top">Series</p>
             </Typography>
-            {loading ? (
+            {!loading ? (
                 <LinearProgress
                     sx={{
                         marginTopTop: '100px',
@@ -68,7 +74,8 @@ function TVSeries({ series, loading }: SeriesProps) {
 }
 const mapStateToProps = (state: RootState) => ({
     series: state.movies.seriesTop,
-    loading: state.movies.loading,
+    loadingTVSeries: state.movies.loadingTVSeries,
+    loadingVideoSeries: state.movies.loadingVideoSeries,
 });
 const connector = connect(mapStateToProps);
 export default connector(TVSeries);

@@ -8,6 +8,7 @@ import {
     MovieDetails,
     Popular,
     PopularTVSeries,
+    VideoResponseSeries,
 } from '../api/types';
 
 import createReducer from '../redux/utils';
@@ -22,7 +23,10 @@ import {
     moviesSearch,
     moviesVideo,
     serialsPopular,
+    serialsPopularVideo,
     setLoadingFalse,
+    tvSeriesLoading,
+    videoSeriesLoading,
 } from '../actions';
 
 const initialState: IMovieState = {
@@ -33,6 +37,9 @@ const initialState: IMovieState = {
     video: [],
     popular: [],
     seriesTop: [],
+    videoSeries: [],
+    loadingTVSeries: false,
+    loadingVideoSeries: false,
 };
 
 // optimization function mapped
@@ -155,29 +162,61 @@ export function fetchPopularMovie(): AppThunk<Promise<void>> {
 }
 export function fetchPopularTVSeries(): AppThunk<Promise<void>> {
     return async (dispatch, getState) => {
-        const imageUrl = await fetchConfigAndReturnImageUrl(dispatch);
-        const m = await client.getTVTopRated();
+        dispatch(tvSeriesLoading());
+        try {
+            const imageUrl = await fetchConfigAndReturnImageUrl(dispatch);
+            const m = await client.getTVTopRated();
 
-        const mappedResults: PopularTVSeries[] = m.map((m) => ({
-            backdrop_path: m.poster_path
-                ? `${imageUrl}w300${m.backdrop_path}`
-                : undefined,
-            first_air_date: m.first_air_date,
-            genre_ids: m.genre_ids,
-            id: m.id,
-            name: m.name,
-            origin_country: m.origin_country,
-            original_language: m.original_language,
-            original_name: m.original_name,
-            overview: m.overview,
-            popularity: m.popularity,
-            poster_path: m.poster_path
-                ? `${imageUrl}w300${m.poster_path}`
-                : undefined,
-            vote_average: m.vote_average,
-            vote_count: m.vote_count,
-        }));
-        dispatch(serialsPopular(mappedResults));
+            const mappedResults: PopularTVSeries[] = m.map((m) => ({
+                backdrop_path: m.poster_path
+                    ? `${imageUrl}w300${m.backdrop_path}`
+                    : undefined,
+                first_air_date: m.first_air_date,
+                genre_ids: m.genre_ids,
+                id: m.id,
+                name: m.name,
+                origin_country: m.origin_country,
+                original_language: m.original_language,
+                original_name: m.original_name,
+                overview: m.overview,
+                popularity: m.popularity,
+                poster_path: m.poster_path
+                    ? `${imageUrl}w300${m.poster_path}`
+                    : undefined,
+                vote_average: m.vote_average,
+                vote_count: m.vote_count,
+            }));
+            dispatch(serialsPopular(mappedResults));
+        } finally {
+            dispatch(setLoadingFalse());
+        }
+    };
+}
+export function fetchVideoSeries(videoId: number): AppThunk<Promise<void>> {
+    return async (dispatch, getState) => {
+        dispatch(videoSeriesLoading());
+        try {
+            const video = await client.getVideoSeries(videoId);
+
+            const mappedResults: VideoResponseSeries = {
+                id: video.id,
+                results: video.results.map((m) => ({
+                    iso_639_1: m.iso_639_1,
+                    iso_3166_1: m.iso_3166_1,
+                    name: m.name,
+                    key: m.key,
+                    site: m.site,
+                    size: m.size,
+                    type: m.type,
+                    official: m.official,
+                    published_at: m.published_at,
+                    id: m.id,
+                })),
+            };
+            dispatch(serialsPopularVideo([mappedResults]));
+        } finally {
+            dispatch(setLoadingFalse());
+        }
     };
 }
 const moviesReducer = createReducer<IMovieState>(initialState, {
@@ -220,6 +259,18 @@ const moviesReducer = createReducer<IMovieState>(initialState, {
             state.loading = false;
         }
     ),
+    'movies/videoSeries': produce(
+        (state, action: ActionWidthPayload<VideoResponseSeries[]>) => {
+            state.videoSeries = action.payload;
+            state.loading = true;
+        }
+    ),
+    'movies/tvSeriesLoading': produce((state) => {
+        state.loadingTVSeries = true;
+    }),
+    'movies/videoSeriesLoading': produce((state) => {
+        state.loadingVideoSeries = true;
+    }),
 });
 
 export default moviesReducer;

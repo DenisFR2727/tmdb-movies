@@ -1,16 +1,32 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { IMovieState } from '../../reducers/types';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchVideoSeries } from '../../reducers/movies';
+
+import {
+    PopularTVSeries,
+    PopularVideoSeries,
+    VideoResponseSeries,
+} from '../../api/types';
+// Mui
+import { Button, CardActions, Grid, Paper } from '@mui/material';
+import { Box } from '@mui/material';
+import { Modal } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { PopularTVSeries } from '../../api/types';
-import { Button } from '@mui/material';
+
 import { useSpring, animated } from '@react-spring/web';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-const AnimatedCard = animated(Typography);
+import ReactPlayer from 'react-player';
+
+const AnimatedCard = animated(Paper);
 function TVSeriesCards({
+    id,
     backdrop_path,
     name,
     overview,
@@ -19,7 +35,15 @@ function TVSeriesCards({
     vote_average,
     origin_country,
 }: PopularTVSeries) {
+    const dispatch = useAppDispatch();
+    const videos = useSelector(
+        (state: { movies: IMovieState }) => state.movies.videoSeries
+    );
     const [hiddenText, setHiddenText] = useState<boolean>(true);
+    const [movieVideo, setMovieVideo] = useState<PopularVideoSeries | null>(
+        null
+    );
+    const [open, setOpen] = useState<boolean>(false);
     const [props, set] = useSpring(() => ({
         paddingTop: '0px',
     }));
@@ -28,11 +52,37 @@ function TVSeriesCards({
     const year: string = first_air_date.slice(0, 4);
     const rating: string = vote_average.toFixed(1);
     const country: string = origin_country.map((c) => c).join('');
+    const [currentId, setCurrentId] = useState<number | null>(null);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    useEffect(() => {
+        if (currentId !== null) {
+            dispatch(fetchVideoSeries(Number(currentId)));
+        }
+    }, [currentId, dispatch]);
+
+    //  find video to id
+    useEffect(() => {
+        const videoResponse = videos.find(
+            (videoResponse: VideoResponseSeries): boolean =>
+                videoResponse.id === Number(id)
+        );
+
+        const video = videoResponse?.results[0] ?? null;
+        setMovieVideo(video);
+    }, [id, videos]);
+
+    const getVideoMovie = (id: number) => {
+        handleOpen();
+        setCurrentId(id);
+    };
 
     const openOverview = (): void => {
         if (hiddenText === true) {
             setHiddenText(false);
-            set({ paddingTop: '20px' });
+            set({ paddingTop: '30px' });
         } else {
             setHiddenText(true);
             set({ paddingTop: '0px' });
@@ -67,12 +117,29 @@ function TVSeriesCards({
                 <Typography>Year: {year}</Typography>
                 <Typography>Rating: {rating}</Typography>
                 <Typography>Country: {country}</Typography>
-                <AnimatedCard
-                    style={props}
-                    variant="body2"
-                    color="text.secondary"
-                >
-                    {hiddenText ? `${overview.slice(0, 50)}` : overview}
+                <AnimatedCard style={props} color="text.secondary">
+                    {hiddenText ? (
+                        `${overview.slice(0, 50)}`
+                    ) : (
+                        <>
+                            {overview}{' '}
+                            <CardActions>
+                                <Button
+                                    onClick={() => getVideoMovie(id)}
+                                    size="small"
+                                >
+                                    Trailer video
+                                </Button>
+                            </CardActions>
+                            <Grid>
+                                <ModalVideo
+                                    open={open}
+                                    handleClose={handleClose}
+                                    movieVideo={movieVideo}
+                                />
+                            </Grid>
+                        </>
+                    )}
                     {
                         <Button
                             sx={{
@@ -96,18 +163,42 @@ function TVSeriesCards({
         </Card>
     );
 }
-
+interface ModalProps {
+    open: boolean;
+    handleClose: () => void;
+    movieVideo: { key: string } | null;
+}
+function ModalVideo({ open, handleClose, movieVideo }: ModalProps) {
+    return (
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    width: '80vw',
+                    height: '80vh',
+                }}
+            >
+                <ReactPlayer
+                    url={`https://www.youtube.com/watch?v=${movieVideo?.key}`}
+                    playing
+                    controls
+                    width="100%"
+                    height="100%"
+                />
+            </Box>
+        </Modal>
+    );
+}
+export { ModalVideo };
 export default TVSeriesCards;
-// backdrop_path: string | undefined;
-// first_air_date: string;
-// genre_ids: Genre;
-// id: number;
-// name: string;
-// origin_country: OriginCountry;
-// original_language: string;
-// original_name: string;
-// overview: string;
-// popularity: number;
-// poster_path: string;
-// vote_average: number;
-// vote_count: number;

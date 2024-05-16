@@ -4,6 +4,7 @@ import {
     PopularTVSeries,
     Production_companies,
     VideoResponse,
+    VideoResponseSeries,
 } from '../api/types';
 interface Movie {
     id: number;
@@ -24,5 +25,8 @@ interface IMovieState {
     video: VideoResponse[];
     popular: Popular[];
     seriesTop: PopularTVSeries[];
+    videoSeries: VideoResponseSeries[];
+    loadingTVSeries: boolean;
+    loadingVideoSeries: boolean;
 }
 export type { Movie, IMovieState };
