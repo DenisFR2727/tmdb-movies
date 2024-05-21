@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { HeaderLink } from '../../App';
 import { useSelector } from 'react-redux';
 import { fetchSearchMovies } from '../../reducers/movies';
@@ -49,6 +49,7 @@ export function SearchAppBar() {
         }, 5000);
         return () => clearTimeout(timer);
     }, []);
+
     return (
         <Box
             sx={{
@@ -129,6 +130,9 @@ export function SearchAppBar() {
             {isModalOpen && (
                 <Modal>
                     <p>Please find a movie in search!</p>
+                    <button className="btn-modal-search">
+                        <div className="btn-close"></div>
+                    </button>
                 </Modal>
             )}
         </Box>
