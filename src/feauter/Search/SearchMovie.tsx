@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useCallback } from 'react';
 import { HeaderLink } from '../../App';
 import { useSelector } from 'react-redux';
 import { fetchSearchMovies } from '../../reducers/movies';
@@ -20,6 +21,7 @@ import { Button } from 'react-bootstrap';
 import './search.scss';
 import usePagination from '../../hooks/pagination';
 import PaginationRounded from '../pagination/Pagination';
+import Modal from '../Modal/Modal';
 
 export function SearchAppBar() {
     const dispatch = useAppDispatch();
@@ -28,8 +30,11 @@ export function SearchAppBar() {
         (state: { movies: IMovieState }) => state.movies.search
     );
     const [query, setQuery] = React.useState<string>('');
+    const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
         setQuery(event.target.value);
     };
 
@@ -37,11 +42,18 @@ export function SearchAppBar() {
         dispatch(fetchSearchMovies(query));
         setQuery('');
     };
-
+    // Modal
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsModalOpen(true);
+        }, 5000);
+        return () => clearTimeout(timer);
+    }, []);
     return (
         <Box
             sx={{
                 flexGrow: 1,
+                position: 'relative',
             }}
         >
             <AppBar position="fixed">
@@ -113,6 +125,11 @@ export function SearchAppBar() {
                         handlePageChange={handlePageChange}
                     />
                 </Grid>
+            )}
+            {isModalOpen && (
+                <Modal>
+                    <p>Please find a movie in search!</p>
+                </Modal>
             )}
         </Box>
     );
