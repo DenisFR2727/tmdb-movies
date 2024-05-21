@@ -49,7 +49,9 @@ export function SearchAppBar() {
         }, 5000);
         return () => clearTimeout(timer);
     }, []);
-
+    const onClose = () => {
+        setIsModalOpen(false);
+    };
     return (
         <Box
             sx={{
@@ -128,11 +130,8 @@ export function SearchAppBar() {
                 </Grid>
             )}
             {isModalOpen && (
-                <Modal>
+                <Modal onClose={onClose}>
                     <p>Please find a movie in search!</p>
-                    <button className="btn-modal-search">
-                        <div className="btn-close"></div>
-                    </button>
                 </Modal>
             )}
         </Box>
