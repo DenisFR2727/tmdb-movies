@@ -1,0 +1,10 @@
+.marquee {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+    background: red;
+    overflow: hidden;
+}
