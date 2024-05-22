@@ -30,7 +30,7 @@
         transform: translate(-50%, -50%);
         width: 100%;
         max-width: 600px;
-        // padding-top: 200px;
+
         .carousel-inner {
             border-radius: 20px;
             box-shadow: 10px 10px 10px 12px;
@@ -39,6 +39,11 @@
             top: 45%;
             width: 100%;
             max-width: 500px;
+
+            .wrapper {
+                bottom: 0;
+                width: 100%;
+            }
         }
         @media (max-width: 500px) {
             top: 50%;
@@ -54,20 +59,6 @@
             width: 78%;
         }
     }
-    // .marqueeText {
-    //     display: inline-block;
-    //     animation: marquee 15s linear infinite;
-    //     // width: 200px;
-    //     margin-left: 100px;
-    // }
-    // @keyframes marquee {
-    //     0% {
-    //         transform: translateX(0);
-    //     }
-    //     100% {
-    //         transform: translateX(-100%);
-    //     }
-    // }
 }
 .loading-popular {
     display: flex;
