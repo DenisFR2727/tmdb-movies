@@ -12,7 +12,8 @@ const useScrollUp = () => {
         };
         window.addEventListener('scroll', toggleVisability);
 
-        return () => window.removeEventListener('scroll', toggleVisability);
+        return (): void =>
+            window.removeEventListener('scroll', toggleVisability);
     }, []);
     const handleClick = (): void => {
         window.scrollTo({ top: 0, behavior: 'smooth' });

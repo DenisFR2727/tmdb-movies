@@ -22,6 +22,7 @@ import './search.scss';
 import usePagination from '../../hooks/pagination';
 import PaginationRounded from '../pagination/Pagination';
 import Modal from '../Modal/Modal';
+// import { Dispatch } from 'redux';
 
 export function SearchAppBar() {
     const dispatch = useAppDispatch();
@@ -45,10 +46,14 @@ export function SearchAppBar() {
     // Modal
     useEffect(() => {
         const timer = setTimeout(() => {
-            setIsModalOpen(true);
+            if (searchResults.length > 0) {
+                setIsModalOpen(false);
+            } else {
+                setIsModalOpen(true);
+            }
         }, 5000);
         return () => clearTimeout(timer);
-    }, []);
+    }, [searchResults]);
     const onClose = () => {
         setIsModalOpen(false);
     };

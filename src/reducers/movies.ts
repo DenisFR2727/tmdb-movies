@@ -28,11 +28,11 @@ import {
     tvSeriesLoading,
     videoSeriesLoading,
 } from '../actions';
-
+const savedSearch = localStorage.getItem('searchMovies');
 const initialState: IMovieState = {
     top: [],
     loading: false,
-    search: [],
+    search: savedSearch ? JSON.parse(savedSearch) : [],
     details: [],
     video: [],
     popular: [],
@@ -82,6 +82,8 @@ export function fetchSearchMovies(query: string): AppThunk<Promise<void>> {
 
         const mappedResults: Movie[] = mappedResultMovies(results, imageUrl);
         dispatch(moviesSearch(mappedResults));
+
+        localStorage.setItem('searchMovies', JSON.stringify(mappedResults));
     };
 }
 // Deteils
