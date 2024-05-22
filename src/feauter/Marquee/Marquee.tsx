@@ -7,7 +7,9 @@ interface MarqueeProps {
 function Marquee({ children }: MarqueeProps) {
     return (
         <div className={styles.wrapper}>
-            <div className={styles.marquee}>{children}</div>
+            <div className={styles.marquee}>
+                {children} {children}
+            </div>
         </div>
     );
 }

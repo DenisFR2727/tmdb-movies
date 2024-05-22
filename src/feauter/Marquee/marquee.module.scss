@@ -1,15 +1,19 @@
 .wrapper {
-    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 .marquee {
     position: absolute;
     bottom: 0;
     white-space: nowrap;
     display: inline-block;
-    animation: marquee 30s linear infinite;
+    animation: marquee 60s linear infinite;
+    background: red;
+    // overflow: hidden;
 }
 .marquee p {
     display: inline-block;
+    padding-top: 10px;
     padding-left: 50px;
     padding-right: 50px;
     text-align: center;
@@ -22,6 +26,6 @@
     }
 
     100% {
-        transform: translateX(calc(-100% - 100px));
+        transform: translateX(calc(-100%));
     }
 }
