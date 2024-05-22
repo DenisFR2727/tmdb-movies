@@ -1,23 +1,27 @@
+.wrapper {
+    max-width: 100%;
+}
 .marquee {
     position: absolute;
     bottom: 0;
     white-space: nowrap;
-    overflow: hidden;
     display: inline-block;
-    animation: marquee 15s linear infinite;
+    animation: marquee 30s linear infinite;
 }
 .marquee p {
     display: inline-block;
     padding-left: 50px;
+    padding-right: 50px;
+    text-align: center;
     color: white;
 }
 
 @keyframes marquee {
     0% {
-        transform: translate(0);
+        transform: translate(0, 0);
     }
 
     100% {
-        transform: translate(-50%, 0);
+        transform: translateX(calc(-100% - 100px));
     }
 }

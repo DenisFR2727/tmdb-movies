@@ -14,7 +14,7 @@ import { Image } from 'react-bootstrap';
 import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Marquee from '../Marquee/Marquee';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 interface PopularProps {
     popular: Popular[];
@@ -60,11 +60,13 @@ function Home({ popular, loading }: PopularProps) {
                     </Carousel.Item>
                 ))}
             </Carousel>
-            <Marquee>
-                {popular.map((t) => (
-                    <p key={t.id}>{t.original_title}</p>
-                ))}
-            </Marquee>
+            <Box sx={{ overflow: 'hidden' }}>
+                <Marquee>
+                    {popular.map((t) => (
+                        <p key={t.id}>{t.original_title}</p>
+                    ))}
+                </Marquee>
+            </Box>
         </section>
     );
 }
