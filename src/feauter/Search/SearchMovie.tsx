@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { HeaderLink } from '../../App';
 import { useSelector } from 'react-redux';
 import { fetchSearchMovies } from '../../reducers/movies';
@@ -18,20 +18,22 @@ import SearchIcon from '@mui/icons-material/Search';
 import { IMovieState } from '../../reducers/types';
 
 import { Button } from 'react-bootstrap';
-import './search.scss';
 import usePagination from '../../hooks/pagination';
 import PaginationRounded from '../pagination/Pagination';
 import Modal from '../Modal/Modal';
+import { AppDispatch } from '../../store';
 // import { Dispatch } from 'redux';
 
+import styles from './search.module.scss';
+
 export function SearchAppBar() {
-    const dispatch = useAppDispatch();
+    const dispatch: AppDispatch = useAppDispatch();
     const { page, itemsPerPage, handlePageChange } = usePagination();
     const searchResults = useSelector(
         (state: { movies: IMovieState }) => state.movies.search
     );
-    const [query, setQuery] = React.useState<string>('');
-    const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
+    const [query, setQuery] = useState<string>('');
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -45,7 +47,7 @@ export function SearchAppBar() {
     };
     // Modal
     useEffect(() => {
-        const timer = setTimeout(() => {
+        const timer = setTimeout((): void => {
             if (searchResults.length > 0) {
                 setIsModalOpen(false);
             } else {
@@ -54,6 +56,7 @@ export function SearchAppBar() {
         }, 5000);
         return () => clearTimeout(timer);
     }, [searchResults]);
+
     const onClose = () => {
         setIsModalOpen(false);
     };
@@ -83,7 +86,7 @@ export function SearchAppBar() {
                                     outline: 'none',
                                 },
                             }}
-                            id="border"
+                            id={styles.border}
                         />
                         <Button
                             variant="outlined"
@@ -100,7 +103,7 @@ export function SearchAppBar() {
             </AppBar>
             {searchResults.length === 0 ? (
                 <Typography
-                    id="not-found-movies"
+                    id={styles.notFoundMovies}
                     sx={{
                         paddingTop: '100px',
                         display: 'flex',
@@ -137,6 +140,13 @@ export function SearchAppBar() {
             {isModalOpen && (
                 <Modal onClose={onClose}>
                     <p>Please find a movie in search!</p>
+                    <img
+                        className={styles.smile}
+                        width="60"
+                        height="60"
+                        src="https://img.icons8.com/papercut/60/happy.png"
+                        alt="happy"
+                    />
                 </Modal>
             )}
         </Box>
