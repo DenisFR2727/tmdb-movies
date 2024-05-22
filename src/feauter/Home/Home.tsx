@@ -13,6 +13,8 @@ import { Image } from 'react-bootstrap';
 
 import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Marquee from '../Marquee/Marquee';
+import { Typography } from '@mui/material';
 
 interface PopularProps {
     popular: Popular[];
@@ -58,6 +60,18 @@ function Home({ popular, loading }: PopularProps) {
                     </Carousel.Item>
                 ))}
             </Carousel>
+            <Marquee>
+                {popular.map((t) => (
+                    <p key={t.id} className="marqueeText">
+                        {t.original_title}
+                    </p>
+                ))}
+                {popular.map((t) => (
+                    <p key={t.id} className="marqueeText">
+                        {t.original_title}
+                    </p>
+                ))}
+            </Marquee>
         </section>
     );
 }
