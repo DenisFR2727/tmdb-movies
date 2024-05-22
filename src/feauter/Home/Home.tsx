@@ -62,14 +62,7 @@ function Home({ popular, loading }: PopularProps) {
             </Carousel>
             <Marquee>
                 {popular.map((t) => (
-                    <p key={t.id} className="marqueeText">
-                        {t.original_title}
-                    </p>
-                ))}
-                {popular.map((t) => (
-                    <p key={t.id} className="marqueeText">
-                        {t.original_title}
-                    </p>
+                    <p key={t.id}>{t.original_title}</p>
                 ))}
             </Marquee>
         </section>
