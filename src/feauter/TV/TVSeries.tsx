@@ -12,6 +12,8 @@ import {
     Typography,
     Container,
 } from '@mui/material';
+import usePagination from '../../hooks/pagination';
+import PaginationRounded from '../pagination/Pagination';
 
 interface SeriesProps {
     series: PopularTVSeries[];
@@ -25,6 +27,7 @@ function TVSeries({
     loadingVideoSeries,
 }: SeriesProps) {
     const dispatch = useAppDispatch();
+    const { page, itemsPerPage, handlePageChange } = usePagination();
     const loading = loadingTVSeries || loadingVideoSeries;
     useEffect(() => {
         dispatch(fetchPopularTVSeries());
@@ -56,17 +59,35 @@ function TVSeries({
                     spacing={2}
                     sx={{
                         display: 'flex',
+                        justifyContent: 'center',
                         alignItems: 'stretch',
                         marginTop: '20px',
                     }}
                 >
-                    {series.map((s) => (
-                        <Grid key={s.id} item xs={12} sm={6} md={4} lg={3}>
-                            <Box height="100%">
-                                <TVSeriesCards {...s} />
-                            </Box>
-                        </Grid>
-                    ))}
+                    {series
+                        .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+                        .map((s) => (
+                            <Grid key={s.id} item xs={12} sm={6} md={4} lg={3}>
+                                <Box height="100%">
+                                    <TVSeriesCards {...s} />
+                                </Box>
+                            </Grid>
+                        ))}
+                    <Grid
+                        item
+                        xs={12}
+                        sx={{
+                            paddingTop: '20px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <PaginationRounded
+                            count={Math.ceil(series.length / itemsPerPage)}
+                            page={page}
+                            handlePageChange={handlePageChange}
+                        />
+                    </Grid>
                 </Grid>
             )}
         </Container>
