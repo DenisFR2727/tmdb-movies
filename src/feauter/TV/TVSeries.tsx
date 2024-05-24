@@ -29,6 +29,7 @@ function TVSeries({
     const dispatch = useAppDispatch();
     const { page, itemsPerPage, handlePageChange } = usePagination();
     const loading = loadingTVSeries || loadingVideoSeries;
+
     useEffect(() => {
         dispatch(fetchPopularTVSeries());
     }, [dispatch]);

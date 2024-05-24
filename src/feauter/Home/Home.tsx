@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchPopularMovie } from '../../reducers/movies';
 import { useAppDispatch } from '../../hooks/hooks';
 import { connect } from 'react-redux';
@@ -14,14 +14,36 @@ import { Image } from 'react-bootstrap';
 import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Marquee from '../Marquee/Marquee';
+import { green } from '@mui/material/colors';
 
 interface PopularProps {
     popular: Popular[];
     loading: boolean;
 }
-
+interface RandomColors {
+    red: number;
+    green: number;
+    blue: number;
+}
 function Home({ popular, loading }: PopularProps) {
     const dispatch = useAppDispatch();
+    const [colors, setColors] = useState<string[]>([]);
+
+    useEffect(() => {
+        const interval = setInterval((): void => {
+            setColors(
+                popular.map((): string => {
+                    const rgbColors: RandomColors = {
+                        red: Math.floor(Math.random() * 256),
+                        green: Math.floor(Math.random() * 256),
+                        blue: Math.floor(Math.random() * 256),
+                    };
+                    return `rgb(${rgbColors.red}, ${rgbColors.green}, ${rgbColors.blue})`;
+                })
+            );
+        }, 1500);
+        return () => clearInterval(interval);
+    }, [popular]);
 
     useEffect(() => {
         dispatch(fetchPopularMovie());
@@ -60,9 +82,13 @@ function Home({ popular, loading }: PopularProps) {
                 ))}
             </Carousel>
             <Marquee>
-                {popular.map((t) => (
-                    <p key={t.id}>{t.original_title}</p>
-                ))}
+                {popular.map((t, index) => {
+                    return (
+                        <p style={{ color: colors[index] }} key={t.id}>
+                            {t.original_title}
+                        </p>
+                    );
+                })}
             </Marquee>
         </section>
     );
