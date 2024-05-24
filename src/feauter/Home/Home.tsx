@@ -14,7 +14,6 @@ import { Image } from 'react-bootstrap';
 import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Marquee from '../Marquee/Marquee';
-import { green } from '@mui/material/colors';
 
 interface PopularProps {
     popular: Popular[];
@@ -42,7 +41,7 @@ function Home({ popular, loading }: PopularProps) {
                 })
             );
         }, 1500);
-        return () => clearInterval(interval);
+        return (): void => clearInterval(interval);
     }, [popular]);
 
     useEffect(() => {

@@ -53,9 +53,10 @@ function TVSeriesCards({
     const rating: string = vote_average.toFixed(1);
     const country: string = origin_country.map((c) => c).join('');
     const [currentId, setCurrentId] = useState<number | null>(null);
+    const [rotate, setRotate] = useState<boolean>(false);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpen = (): void => setOpen(true);
+    const handleClose = (): void => setOpen(false);
 
     useEffect(() => {
         if (currentId !== null) {
@@ -74,11 +75,16 @@ function TVSeriesCards({
         setMovieVideo(video);
     }, [id, videos]);
 
-    const getVideoMovie = (id: number) => {
+    const getVideoMovie = (id: number): void => {
         handleOpen();
         setCurrentId(id);
     };
-
+    const rotatePoster = (): void => {
+        setRotate(true);
+        if (rotate) {
+            setRotate(false);
+        }
+    };
     const openOverview = (): void => {
         if (hiddenText === true) {
             setHiddenText(false);
@@ -153,11 +159,18 @@ function TVSeriesCards({
                             {hiddenText ? `...more` : `up`}
                         </Button>
                     }
-                    <CardMedia
-                        component="img"
-                        image={backdrop_path}
-                        alt={name}
-                    />
+                    {
+                        <CardMedia
+                            sx={{
+                                cursor: 'pointer',
+                                transform: rotate ? 'scale(2,2)' : 'skale(0,0)',
+                            }}
+                            component="img"
+                            image={backdrop_path}
+                            alt={name}
+                            onClick={rotatePoster}
+                        />
+                    }
                 </AnimatedCard>
             </CardContent>
         </Card>
